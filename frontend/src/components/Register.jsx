@@ -62,7 +62,7 @@ const Register = () => {
   });
 
   return (
-    //Ce fragment de code crée des champs de formulaire permettant à l'utilisateur de saisir ses données d'inscription
+    //Ce fragment de code crée des champs du formulaire permettant à l'utilisateur de saisir ses données d'inscription
     //Formik suit l'utilisateur et gère les éventuelles erreurs
     <form onSubmit={formik.handleSubmit}>
       <label>
