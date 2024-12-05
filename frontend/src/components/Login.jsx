@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 //Création d'un composant Login, suivi de l'application du hook 'useFormik' fourni par la bibliothèque Formik,
 // et définition des clés pour les valeurs initiales du formulaire.
 const Login = () => {
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -28,11 +32,11 @@ const Login = () => {
           values,
           { withCredentials: true }
         );
-        alert(response.data.success || "Connexion réussie");
+        if (response.data.success) {
+          navigate("/dashboard");
+        }
       } catch (error) {
-        alert(
-          (error.response && error.response.data.error) || "Connexion échouée"
-        );
+        setError("Connexion a échoué");
       }
     },
   });
@@ -67,6 +71,7 @@ const Login = () => {
           <div>{formik.errors.password}</div>
         ) : null}
       </label>
+      {error && <div>{error}</div>}
       <button type="submit">Connexion</button>
     </form>
   );
