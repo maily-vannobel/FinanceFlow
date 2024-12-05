@@ -6,4 +6,8 @@
         "controller" => "RegisterController",
         "method" => "register"
     ],
+    "login" => [
+        "controller" => "LoginController",
+        "method" => "login"
+    ],
 ];
