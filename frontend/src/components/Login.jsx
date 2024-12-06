@@ -33,10 +33,11 @@ const Login = () => {
           { withCredentials: true }
         );
         if (response.data.success) {
+          alert("Connexion a réussie !");
           navigate("/dashboard");
         }
       } catch (error) {
-        setError("Connexion a échoué");
+        setError(error.response?.data?.message || "Une erreur est survenue");
       }
     },
   });
@@ -72,7 +73,9 @@ const Login = () => {
         ) : null}
       </label>
       {error && <div>{error}</div>}
-      <button type="submit">Connexion</button>
+      <button type="submit" disabled={formik.isSubmitting}>
+        Connexion
+      </button>
     </form>
   );
 };
