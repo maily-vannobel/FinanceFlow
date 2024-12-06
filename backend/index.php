@@ -26,9 +26,30 @@ if(isset($routes[$url])) {
     require_once "controllers/$controllerName.php";
     $controller = new $controllerName();
 
-    // Appelle la méthode associée pour traiter la requête
-    $controller->$methodName();
-    
+// Gère les différentes méthodes HTTP
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($url === 'transactions/update' && isset($_GET['id'])) {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $controller->$methodName($_GET['id'], $data); 
+
+        // Récupère les données JSON depuis le Body pour les autres routes POST
+        $data = json_decode(file_get_contents("php://input"), true);
+        $controller->$methodName($data); 
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['id'])) {
+        $controller->$methodName($_GET['id']); 
+    } else {
+        $controller->$methodName(); 
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    if (isset($_GET['id'])) {
+        $controller->$methodName($_GET['id']);
+    } else {
+        http_response_code(400);
+        echo json_encode(['error' => 'ID required for DELETE request']);
+    }
+}
     // Si aucune route correspondante n'est trouvée, on répond avec un code 404
 } else {
     http_response_code(404);
