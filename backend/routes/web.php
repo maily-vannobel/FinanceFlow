@@ -32,4 +32,49 @@ $routes = [
         "controller" => "TransactionsController",
         "method" => "destroy"
     ],
-];
+    
+    // Routes pour Category
+    "categories" => [
+        "controller" => "CategoryController",
+        "method" => "index"
+    ],
+    "categories/show" => [
+        "controller" => "CategoryController",
+        "method" => "show"
+    ],
+    "categories/create" => [
+        "controller" => "CategoryController",
+        "method" => "store"
+    ],
+    "categories/update" => [
+        "controller" => "CategoryController",
+        "method" => "update"
+    ],
+    "categories/delete" => [
+        "controller" => "CategoryController",
+        "method" => "destroy"
+    ],
+
+    // Routes pour Subcategory
+    "subcategories" => [
+        "controller" => "SubcategoryController",
+        "method" => "index"
+    ],
+    "subcategories/show" => [
+        "controller" => "SubcategoryController",
+        "method" => "show"
+    ],
+    "subcategories/create" => [
+        "controller" => "SubcategoryController",
+        "method" => "store"
+    ],
+    "subcategories/update" => [
+        "controller" => "SubcategoryController",
+        "method" => "update"
+    ],
+    "subcategories/delete" => [
+        "controller" => "SubcategoryController",
+        "method" => "destroy"
+    ],
+
+    ];
