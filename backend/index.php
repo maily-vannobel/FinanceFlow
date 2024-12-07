@@ -2,7 +2,7 @@
 // Ces en-têtes HTTP configurent le support CORS (Cross-Origin Resource Sharing)
 // pour permettre les requêtes provenant de http://localhost:5173
 header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
 
@@ -27,31 +27,33 @@ if(isset($routes[$url])) {
     $controller = new $controllerName();
 
 // Gère les différentes méthodes HTTP
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if ($url === 'transactions/update' && isset($_GET['id'])) {
-        $data = json_decode(file_get_contents("php://input"), true);
-        $controller->$methodName($_GET['id'], $data); 
+    $data = json_decode(file_get_contents("php://input"), true); // Récupère les données JSON
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_GET['id'])) {
+        
+            $controller->$methodName($_GET['id'], $data);
+        } else {
+            $controller->$methodName($data); 
+        }
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        if (isset($_GET['id'])) {
+            $controller->$methodName($_GET['id']); 
+        } else {
+            $controller->$methodName(); 
+        }
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        if (isset($_GET['id'])) {
+            $controller->$methodName($_GET['id']); 
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID required for DELETE request']);
+        }
+    } else {
+        http_response_code(405);
+        echo json_encode(['error' => 'Method not allowed']);
+    }
 
-        // Récupère les données JSON depuis le Body pour les autres routes POST
-        $data = json_decode(file_get_contents("php://input"), true);
-        $controller->$methodName($data); 
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['id'])) {
-        $controller->$methodName($_GET['id']); 
-    } else {
-        $controller->$methodName(); 
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    if (isset($_GET['id'])) {
-        $controller->$methodName($_GET['id']);
-    } else {
-        http_response_code(400);
-        echo json_encode(['error' => 'ID required for DELETE request']);
-    }
-}
-    // Si aucune route correspondante n'est trouvée, on répond avec un code 404
 } else {
     http_response_code(404);
-    echo "La page n'a pas été trouvée";
+    echo json_encode(['error' => 'Route not found']);
 }
