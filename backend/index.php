@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Ces en-têtes HTTP configurent le support CORS (Cross-Origin Resource Sharing)
 // pour permettre les requêtes provenant de http://localhost:5173
 header("Access-Control-Allow-Origin: http://localhost:5173");
@@ -27,31 +31,42 @@ if(isset($routes[$url])) {
     $controller = new $controllerName();
 
 // Gère les différentes méthodes HTTP
-    $data = json_decode(file_get_contents("php://input"), true); // Récupère les données JSON
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if (isset($_GET['id'])) {
-        
+        // Récupère les données JSON envoyées dans le corps de la requête
+        $data = json_decode(file_get_contents("php://input"), true);
+        if ($url === 'subcategories') {
+            // Appelle la méthode pour créer une sous-catégorie
+            $controller->$methodName($data);
+        } elseif (isset($_GET['id'])) {
+            // Par exemple, pour les mises à jour
             $controller->$methodName($_GET['id'], $data);
         } else {
-            $controller->$methodName($data); 
+            // Autres cas de POST
+            $controller->$methodName($data);
         }
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        if (isset($_GET['id'])) {
-            $controller->$methodName($_GET['id']); 
-        } else {
-            $controller->$methodName(); 
-        }
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-        if (isset($_GET['id'])) {
-            $controller->$methodName($_GET['id']); 
-        } else {
-            http_response_code(400);
-            echo json_encode(['error' => 'ID required for DELETE request']);
-        }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['id'])) {
+        // Pour afficher une seule entrée (par ID)
+        $controller->$methodName($_GET['id']);
+    } elseif (isset($_GET['category_id'])) {
+        // Pour afficher les sous-catégories par category_id
+        $controller->$methodName($_GET['category_id']);
     } else {
-        http_response_code(405);
-        echo json_encode(['error' => 'Method not allowed']);
+        $controller->$methodName();
     }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    if (isset($_GET['id'])) {
+        // Pour supprimer une entrée (par ID)
+        $controller->$methodName($_GET['id']);
+    } else {
+        http_response_code(400);
+        echo json_encode(['error' => 'ID required for DELETE request']);
+    }
+} else {
+    // Méthode HTTP non autorisée
+    http_response_code(405);
+    echo json_encode(['error' => 'Method not allowed']);
+}
 
 } else {
     http_response_code(404);
