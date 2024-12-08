@@ -58,23 +58,27 @@ $routes = [
     // Routes pour Subcategory
     "subcategories" => [
         "controller" => "SubcategoryController",
-        "method" => "index"
+        "method" => "index" 
     ],
     "subcategories/show" => [
         "controller" => "SubcategoryController",
-        "method" => "show"
+        "method" => "show" 
+    ],
+    "subcategories/by-category" => [
+        "controller" => "SubcategoryController",
+        "method" => "findByCategory" 
     ],
     "subcategories/create" => [
         "controller" => "SubcategoryController",
-        "method" => "store"
+        "method" => "store" 
     ],
     "subcategories/update" => [
         "controller" => "SubcategoryController",
-        "method" => "update"
+        "method" => "update" 
     ],
     "subcategories/delete" => [
         "controller" => "SubcategoryController",
-        "method" => "destroy"
+        "method" => "destroy" 
     ],
 
     ];
