@@ -32,4 +32,103 @@ $routes = [
         "controller" => "TransactionsController",
         "method" => "destroy"
     ],
-];
+    
+    // Routes pour Category
+    "categories" => [
+        "controller" => "CategoryController",
+        "method" => "index"
+    ],
+    "categories/show" => [
+        "controller" => "CategoryController",
+        "method" => "show"
+    ],
+    "categories/create" => [
+        "controller" => "CategoryController",
+        "method" => "store"
+    ],
+    "categories/update" => [
+        "controller" => "CategoryController",
+        "method" => "update"
+    ],
+    "categories/delete" => [
+        "controller" => "CategoryController",
+        "method" => "destroy"
+    ],
+
+    // Routes pour Subcategory
+    "subcategories" => [
+        "controller" => "SubcategoryController",
+        "method" => "index" 
+    ],
+    "subcategories/show" => [
+        "controller" => "SubcategoryController",
+        "method" => "show" 
+    ],
+    "subcategories/by-category" => [
+        "controller" => "SubcategoryController",
+        "method" => "findByCategory" 
+    ],
+    "subcategories/create" => [
+        "controller" => "SubcategoryController",
+        "method" => "store" 
+    ],
+    "subcategories/update" => [
+        "controller" => "SubcategoryController",
+        "method" => "update" 
+    ],
+    "subcategories/delete" => [
+        "controller" => "SubcategoryController",
+        "method" => "destroy" 
+    ],
+
+    // Routes pour UserCategory
+    "user-categories" => [
+        "controller" => "UserCategoryController",
+        "method" => "index" 
+    ],
+    "user-categories/show" => [
+        "controller" => "UserCategoryController",
+        "method" => "show" 
+    ],
+    "user-categories/create" => [
+        "controller" => "UserCategoryController",
+        "method" => "store" 
+    ],
+    "user-categories/update" => [
+        "controller" => "UserCategoryController",
+        "method" => "update"
+    ],
+    "user-categories/delete" => [
+        "controller" => "UserCategoryController",
+        "method" => "destroy" 
+    ],
+
+    // Routes pour UserSubcategory
+    "user-subcategories" => [
+        "controller" => "UserSubcategoryController",
+        "method" => "index" 
+    ],
+    "user-subcategories/show" => [
+        "controller" => "UserSubcategoryController",
+        "method" => "show"
+    ],
+"user-subcategories/by-category" => [
+    "controller" => "UserSubcategoryController",
+    "method" => "findByUserCategory"
+    ],
+    
+    "user-subcategories/create" => [
+        "controller" => "UserSubcategoryController",
+        "method" => "store" 
+    ],
+    "user-subcategories/update" => [
+        "controller" => "UserSubcategoryController",
+        "method" => "update" 
+    ],
+    "user-subcategories/delete" => [
+        "controller" => "UserSubcategoryController",
+        "method" => "destroy" 
+    ],
+    
+
+    ];
