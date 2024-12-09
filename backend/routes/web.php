@@ -81,4 +81,54 @@ $routes = [
         "method" => "destroy" 
     ],
 
+    // Routes pour UserCategory
+    "user-categories" => [
+        "controller" => "UserCategoryController",
+        "method" => "index" 
+    ],
+    "user-categories/show" => [
+        "controller" => "UserCategoryController",
+        "method" => "show" 
+    ],
+    "user-categories/create" => [
+        "controller" => "UserCategoryController",
+        "method" => "store" 
+    ],
+    "user-categories/update" => [
+        "controller" => "UserCategoryController",
+        "method" => "update"
+    ],
+    "user-categories/delete" => [
+        "controller" => "UserCategoryController",
+        "method" => "destroy" 
+    ],
+
+    // Routes pour UserSubcategory
+    "user-subcategories" => [
+        "controller" => "UserSubcategoryController",
+        "method" => "index" 
+    ],
+    "user-subcategories/show" => [
+        "controller" => "UserSubcategoryController",
+        "method" => "show"
+    ],
+"user-subcategories/by-category" => [
+    "controller" => "UserSubcategoryController",
+    "method" => "findByUserCategory"
+    ],
+    
+    "user-subcategories/create" => [
+        "controller" => "UserSubcategoryController",
+        "method" => "store" 
+    ],
+    "user-subcategories/update" => [
+        "controller" => "UserSubcategoryController",
+        "method" => "update" 
+    ],
+    "user-subcategories/delete" => [
+        "controller" => "UserSubcategoryController",
+        "method" => "destroy" 
+    ],
+    
+
     ];
