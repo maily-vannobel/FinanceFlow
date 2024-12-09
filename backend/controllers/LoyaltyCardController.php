@@ -22,6 +22,17 @@ class LoyaltyCardController {
             echo json_encode(["success" => "La carte a été ajouté" ]);
             
         }
-     
     }
+    //Cette méthode permet d'afficher toutes les cartes de fidélité possédées par l'utilisateur
+    public function get_loyalty_cards($userId) {
+        //Crée une instance du modèle et verifie s'il y a des cartes dans la base de données
+        $loyaltyCardModel = new LoyaltyCard();
+        $cards = $loyaltyCardModel->find_card_by_user($userId);
+        if($cards) {
+            echo json_encode(["success" => true, "cards" => $cards]);
+        }
+        http_response_code(404);
+        echo json_encode(["error" => "Aucune carte de fidélité"]);
+    }
+
  }

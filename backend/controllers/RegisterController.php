@@ -26,4 +26,5 @@ class RegisterController extends Controller {
         ]);
         echo json_encode(["success" => "L'inscription a reussi"]);
     }
+
 }
