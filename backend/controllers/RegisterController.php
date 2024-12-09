@@ -10,7 +10,7 @@ class RegisterController extends Controller {
         $data = json_decode(file_get_contents('php://input'), true);
         // Vérifie si tous les champs obligatoires sont remplis
         if( !$data['firstname'] || !$data['lastname'] || !$data['email'] || !$data['password']) {
-            echo json_encode(["error" => "Tout les champs sont reauis"]);
+            echo json_encode(["error" => "Tout les champs sont requis"]);
             return;
         }
          // Crée une instance du modèle User pour interagir avec la table "users"

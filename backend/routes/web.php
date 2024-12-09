@@ -10,4 +10,8 @@
         "controller" => "LoginController",
         "method" => "login"
     ],
+    "card" => [
+        "controller" => "LoyaltyCardController",
+        "method" => "create_card"
+    ],
 ];
