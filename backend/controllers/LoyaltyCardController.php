@@ -30,9 +30,10 @@ class LoyaltyCardController {
         $cards = $loyaltyCardModel->find_card_by_user($userId);
         if($cards) {
             echo json_encode(["success" => true, "cards" => $cards]);
-        }
-        http_response_code(404);
+        }else {
+            http_response_code(404);
         echo json_encode(["error" => "Aucune carte de fidélité"]);
+        }
     }
 
  }

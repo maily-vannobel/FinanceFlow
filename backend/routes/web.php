@@ -14,4 +14,8 @@
         "controller" => "LoyaltyCardController",
         "method" => "create_card"
     ],
+    "getUserCards" => [
+        "controller" => "LoyaltyCardController",
+        "method" => "get_loyalty_cards"
+    ],
 ];
