@@ -14,13 +14,31 @@ const LoyaltyCards = () => {
     //Envoi d'une requête GET a l'endpoint pour récuperer les cartes de fidélité d'un utilisateur, avec gestion des erreurs
     const fetchCards = async () => {
         try {
-            const response = await axios.get("http://localhost/8000/get_loyalty_cards", {
+            const response = await axios.get("http://localhost:8000/get_loyalty_cards", {
                 params: {user_id: currentUserId},
                 withCredentials: true,
         });
         setCards(response.data.cards);
         }catch(err) {
-            setError(err.response?.data?.message || "L'erreur lors de la récupération des cartes")
+            setError(err.response?.data?.message || "L'erreur lors de la récupération des cartes");
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(
+                "http://localhost:8000/addCard", 
+                {card_number: cardNumber, user_id: currentUserId},
+                {withCredentials: true});
+            if(response.data.success){
+                alert("La carte a été ajouté");
+                fetchCards();
+                setCardNumber("");
+
+            }
+        }catch (err) {
+            setError(err.response?.data?.message || "L'erreur lors de l'ajout de la carte");
         }
     };
 
