@@ -130,5 +130,26 @@ $routes = [
         "method" => "destroy" 
     ],
     
+    // Routes pour Accounts
+    "accounts" => [
+        "controller" => "AccountController",
+        "method" => "index" 
+    ],
+    "accounts/show" => [
+        "controller" => "AccountController",
+        "method" => "show" 
+    ],
+    "accounts/create" => [
+        "controller" => "AccountController",
+        "method" => "store"
+    ],
+    "accounts/update" => [
+        "controller" => "AccountController",
+        "method" => "update" 
+    ],
+    "accounts/delete" => [
+        "controller" => "AccountController",
+        "method" => "destroy"
+    ],
 
     ];
