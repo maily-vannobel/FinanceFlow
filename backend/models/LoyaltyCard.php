@@ -4,7 +4,7 @@ require_once "Model.php";
 
 class LoyaltyCard extends Model {
     public function __construct() {
-        parent::__construct("loyalty_cards");
+        parent::__construct("loyalty_card");
     }
     //Cette méthode permet de créer un nouvel enregistrement dans la table "loyalty_card"
     public function create_card($data) {

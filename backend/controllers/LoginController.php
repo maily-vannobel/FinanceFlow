@@ -21,6 +21,9 @@ class LoginController extends Controller {
             echo json_encode(["error" => "Email ou mot de passe incorrect"]);
             return;
         }
-        echo json_encode(["success" => "Connexion réussie"]);
+        echo json_encode([
+            "success" => "Connexion réussie",
+            "user_id" => $registeredUser['user_id'],
+        ]);
     }
 }

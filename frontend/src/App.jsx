@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
+import LoyaltyCards from "./components/LoyaltyCards";
 // import "./App.css";
 
 // Composant principal de l'application
@@ -26,6 +27,9 @@ function App() {
             <li>
               <Link to="/login">Connexion</Link>
             </li>
+            <li>
+              <Link to="/loyalty-cards">Les cartes de fidélité</Link>
+            </li>
           </ul>
         </nav>
         {/* Définition des routes pour l'application */}
@@ -34,6 +38,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/loyalty-cards" element={<LoyaltyCards />} />
         </Routes>
       </div>
     </>

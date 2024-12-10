@@ -16,6 +16,7 @@
     ],
     "getUserCards" => [
         "controller" => "LoyaltyCardController",
-        "method" => "get_loyalty_cards"
+        "method" => "get_loyalty_cards",
+        'arguments' => ['user_id'] //méthode avec un paramétre user_id
     ],
 ];

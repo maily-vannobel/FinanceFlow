@@ -2,7 +2,7 @@
 // Ces en-têtes HTTP configurent le support CORS (Cross-Origin Resource Sharing)
 // pour permettre les requêtes provenant de http://localhost:5173
 header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
 
@@ -21,13 +21,15 @@ $url = explode('?', $url)[0];
 if(isset($routes[$url])) {
     $controllerName = $routes[$url]['controller'];
     $methodName = $routes[$url]['method'];
-
+    $arguments = $routes[$url]['arguments'] ?? [];
     // Charge le fichier du contrôleur et crée une instance du contrôleur
     require_once "controllers/$controllerName.php";
     $controller = new $controllerName();
 
-    // Appelle la méthode associée pour traiter la requête
-    $controller->$methodName();
+    // Appelle la méthode avec ou sans des paramétres associée pour traiter la requête 
+    $resolvedArguments = [];
+    foreach ($arguments as $argumentName) {
+        $resolvedArguments[] = $_GET[$argumentName] ?? null;}$controller->$methodName(...$resolvedArguments);
     
     // Si aucune route correspondante n'est trouvée, on répond avec un code 404
 } else {
