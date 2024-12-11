@@ -25,4 +25,9 @@ class LoyaltyCard extends Model {
     $stmt->execute(["user_id" =>$userId, "card_number" => $cardNumber]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
    }
+   // Cette méthode permet de supprimer une carte selon le user id et le numéro de la carte
+   public function delete_card_by_user_and_number($userId,$cardNumber) {
+    $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE user_id = :user_id AND card_number = :card_number");
+    $stmt->execute(["user_id" => $userId, "card_number" => $cardNumber]);
+   }
 }

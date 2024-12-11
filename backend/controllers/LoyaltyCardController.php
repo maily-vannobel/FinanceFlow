@@ -8,7 +8,6 @@ class LoyaltyCardController {
         //Récupere et décode les données json envoyées par l'utilisateur
         $data = json_decode(file_get_contents("php://input"), true);
         //Verifie si tous les champs obligatoires sont remplis
-        
         if(!isset($data["card_number"]) || empty($data["card_number"]) || empty($data["user_id"])) {
             http_response_code(400);
             echo json_encode(["error" => "Le numero de la carte est requis"]);
