@@ -5,5 +5,6 @@
     "register" => [
         "controller" => "RegisterController",
         "method" => "register"
+        // 'arguments' => ['user_id'] Un exemple d'utilisation des functions avec des paramètres
     ],
 ];
