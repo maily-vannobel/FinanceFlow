@@ -10,7 +10,9 @@ const LoyaltyCards = () => {
   const [cardExpiryDate, setCardExpiryDate] = useState("");
   const [cards, setCards] = useState([]);
   const [error, setError] = useState(null);
-  //L'identifiant de l'utilisateur est récupéré depuis le stockage local et assigné à une variable.
+  //today contient la date actuelle, et il va servir à gérer le calendrier
+  const today = new Date().toISOString().split("T")[0];
+  //L'identifiant de l'utilisateur est récupéré depuis le stockage local et assigné à une variable
   const currentUserId = localStorage.getItem("currentUserId");
   // useEffect déclenche dès le début le chargement des cartes existantes, et cela ne se fait qu'une seule fois, comme l'indique le tableau vide
   useEffect(() => {
@@ -73,6 +75,7 @@ const LoyaltyCards = () => {
         setCardExpiryDate("");
       }
     } catch (err) {
+      //Récupération du message d'erreur renvoyé par le serveur via axios ou un message d'erreur par défaut si aucune erreur spécifique n'est recu
       const errorMessage =
         err.response?.data?.error || "L'erreur lors de l'ajout de la carte";
       setError(errorMessage);
@@ -86,7 +89,7 @@ const LoyaltyCards = () => {
   return (
     <div>
       <h2>Les Cartes de Fidélité</h2>
-      {/* Dans le formulaire, les données seront saisi. Après avoir cliqué sur le bouton, la fonction handleSubmit sera déclenchée.
+      {/* Dans le formulaire, les données seront saisi. Après avoir cliqué sur le bouton, la fonction handleSubmit sera déclenchée
        Si l'utilisateur est connecté, la carte sera enregistrée dans la base de données */}
       <form onSubmit={handleSubmit}>
         <input
@@ -106,6 +109,7 @@ const LoyaltyCards = () => {
           placeholder="La date d'expiration"
           value={cardExpiryDate}
           onChange={(e) => setCardExpiryDate(e.target.value)}
+          min={today}
         />
         <button type="submit">Ajoute une carte</button>
       </form>

@@ -14,7 +14,7 @@ class LoyaltyCardController {
             echo json_encode(["error" => "Le numero de la carte est requis"]);
             return;
         }else{
-            //Crée une instance du modèle et enregistre le numero de la carte dans la base de données
+            //Crée une instance du modèle et enregistre les informations de la carte dans la base de données
             $loyaltyCardModel = new LoyaltyCard();
             $userId = $data["user_id"];
             $cardNumber = $data["card_number"];
