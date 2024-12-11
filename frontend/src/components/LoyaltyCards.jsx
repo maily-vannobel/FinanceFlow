@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ReactQR from "react-qr-code";
+import Barcode from "react-barcode";
 
 //Création d'un component 'LoyaltyCards' avec des états initiaux pour gérer le numéro de carte, les cartes de fidélité et les erreurs
 const LoyaltyCards = () => {
@@ -85,7 +86,9 @@ const LoyaltyCards = () => {
         {cards.map((card) => (
           <li key={card.card_id}>
             {card.card_number}
+            {/* Créations des codes-qr et codes-barres à partir du numéro de carte de fidélité  */}
             <ReactQR value={card.card_number} />
+            <Barcode value={card.card_number} />
           </li>
         ))}
       </ul>
