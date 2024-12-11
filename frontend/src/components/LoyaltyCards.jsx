@@ -6,6 +6,8 @@ import Barcode from "react-barcode";
 //Création d'un component 'LoyaltyCards' avec des états initiaux pour gérer le numéro de carte, les cartes de fidélité et les erreurs
 const LoyaltyCards = () => {
   const [cardNumber, setCardNumber] = useState("");
+  const [cardEstablishment, setCardEstablishment] = useState("");
+  const [cardExpiryDate, setCardExpiryDate] = useState("");
   const [cards, setCards] = useState([]);
   const [error, setError] = useState(null);
   //L'identifiant de l'utilisateur est récupéré depuis le stockage local et assigné à une variable.
@@ -26,6 +28,7 @@ const LoyaltyCards = () => {
         withCredentials: true,
       });
       setCards(response.data.cards || []);
+      setError(null);
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -37,14 +40,25 @@ const LoyaltyCards = () => {
   //Envoi d'une requête POST avec le numero de la carte et l'id d'utilisateurs pour ajouter une carte à la base de données
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!cardNumber.trim()) {
-      setError("Le numéro de la carte est requis");
+    if (
+      !cardNumber.trim() ||
+      !cardEstablishment.trim() ||
+      !cardExpiryDate.trim()
+    ) {
+      setError(
+        "Le numéro de la carte, le title et la date d'expiration sont requis"
+      );
       return;
     }
     try {
       const response = await axios.post(
         "http://localhost:8000/addCard",
-        { card_number: cardNumber, user_id: currentUserId },
+        {
+          establishment: cardEstablishment,
+          card_number: cardNumber,
+          expiry_date: cardExpiryDate,
+          user_id: currentUserId,
+        },
         { withCredentials: true }
       );
       // Si la réponse du serveur est positive, l'utilisateur recevra une notification,
@@ -52,7 +66,10 @@ const LoyaltyCards = () => {
       if (response.data.success) {
         alert("La carte a été ajouté");
         fetchCards();
+        setCards([]);
         setCardNumber("");
+        setCardEstablishment("");
+        setCardExpiryDate("");
       }
     } catch (err) {
       setError(
@@ -68,7 +85,7 @@ const LoyaltyCards = () => {
   return (
     <div>
       <h2>Les Cartes de Fidélité</h2>
-      {/* Dans le formulaire, un numéro de carte sera saisi. Après avoir cliqué sur le bouton, la fonction handleSubmit sera déclenchée.
+      {/* Dans le formulaire, les données seront saisi. Après avoir cliqué sur le bouton, la fonction handleSubmit sera déclenchée.
        Si l'utilisateur est connecté, la carte sera enregistrée dans la base de données */}
       <form onSubmit={handleSubmit}>
         <input
@@ -76,6 +93,18 @@ const LoyaltyCards = () => {
           placeholder="Le numero de la carte"
           value={cardNumber}
           onChange={(e) => setCardNumber(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Le nom de la carte"
+          value={cardEstablishment}
+          onChange={(e) => setCardEstablishment(e.target.value)}
+        />
+        <input
+          type="date"
+          placeholder="La date d'expiration"
+          value={cardExpiryDate}
+          onChange={(e) => setCardExpiryDate(e.target.value)}
         />
         <button type="submit">Ajoute une carte</button>
       </form>
@@ -85,9 +114,14 @@ const LoyaltyCards = () => {
       <ul>
         {cards.map((card) => (
           <li key={card.card_id}>
+            <strong>{card.establishment}</strong> <p>La date d'expiration:</p>
+            {card.expiry_date}
+            <br />
             {card.card_number}
+            <br />
             {/* Créations des codes-qr et codes-barres à partir du numéro de carte de fidélité  */}
             <ReactQR value={card.card_number} />
+            <br />
             <Barcode value={card.card_number} />
           </li>
         ))}
