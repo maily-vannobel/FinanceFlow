@@ -65,16 +65,17 @@ const LoyaltyCards = () => {
       //  les cartes seront chargées, et l'état du numéro de carte sera mis à jour dans le state
       if (response.data.success) {
         alert("La carte a été ajouté");
-        fetchCards();
-        setCards([]);
+        window.location.reload();
+        setError(null);
+        setCards();
         setCardNumber("");
         setCardEstablishment("");
         setCardExpiryDate("");
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message || "L'erreur lors de l'ajout de la carte"
-      );
+      const errorMessage =
+        err.response?.data?.error || "L'erreur lors de l'ajout de la carte";
+      setError(errorMessage);
     }
   };
 
@@ -114,10 +115,10 @@ const LoyaltyCards = () => {
       <ul>
         {cards.map((card) => (
           <li key={card.card_id}>
-            <strong>{card.establishment}</strong> <p>La date d'expiration:</p>
-            {card.expiry_date}
+            <strong>{card.establishment}</strong>{" "}
+            <p>La date d'expiration: {card.expiry_date}</p>
             <br />
-            {card.card_number}
+            <p>Le numero de la carte: {card.card_number} </p>
             <br />
             {/* Créations des codes-qr et codes-barres à partir du numéro de carte de fidélité  */}
             <ReactQR value={card.card_number} />
