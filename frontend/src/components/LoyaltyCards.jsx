@@ -10,6 +10,8 @@ const LoyaltyCards = () => {
   const [cardExpiryDate, setCardExpiryDate] = useState("");
   const [cards, setCards] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(null);
   //today contient la date actuelle, et il va servir à gérer le calendrier
   const today = new Date().toISOString().split("T")[0];
   //L'identifiant de l'utilisateur est récupéré depuis le stockage local et assigné à une variable
@@ -31,27 +33,27 @@ const LoyaltyCards = () => {
       });
       setCards(response.data.cards || []);
       setError(null);
+      setSuccess(null);
     } catch (err) {
       setError(
         err.response?.data?.message ||
           "L'erreur lors de la récupération des cartes"
       );
       setCards([]);
+    } finally {
+      setLoading(false);
     }
   };
   //Envoi d'une requête POST avec le numero de la carte et l'id d'utilisateurs pour ajouter une carte à la base de données
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
-      !cardNumber.trim() ||
-      !cardEstablishment.trim() ||
-      !cardExpiryDate.trim()
-    ) {
+    if (!cardNumber.trim() || !cardEstablishment.trim() || !cardExpiryDate) {
       setError(
         "Le numéro de la carte, le title et la date d'expiration sont requis"
       );
       return;
     }
+    setLoading(true);
     try {
       const response = await axios.post(
         "http://localhost:8000/addCard",
@@ -66,10 +68,9 @@ const LoyaltyCards = () => {
       // Si la réponse du serveur est positive, l'utilisateur recevra une notification,
       //  les cartes seront chargées, et l'état du numéro de carte sera mis à jour dans le state
       if (response.data.success) {
-        alert("La carte a été ajouté");
-        window.location.reload();
+        setSuccess("La carte a été ajouté avec success");
         setError(null);
-        setCards();
+        fetchCards();
         setCardNumber("");
         setCardEstablishment("");
         setCardExpiryDate("");
@@ -79,6 +80,8 @@ const LoyaltyCards = () => {
       const errorMessage =
         err.response?.data?.error || "L'erreur lors de l'ajout de la carte";
       setError(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -111,26 +114,32 @@ const LoyaltyCards = () => {
           onChange={(e) => setCardExpiryDate(e.target.value)}
           min={today}
         />
-        <button type="submit">Ajoute une carte</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Chargement..." : "Ajouter une carte"}
+        </button>
       </form>
       {error && <p>{error}</p>}
-      <h3>Tes cartes:</h3>
       {/* Les cartes de fidélité disponibles de l'utilisateur seront affichées sur la page, et un code QR sera généré pour chacune d'elles */}
-      <ul>
-        {cards.map((card) => (
-          <li key={card.card_id}>
-            <strong>{card.establishment}</strong>{" "}
-            <p>La date d'expiration: {card.expiry_date}</p>
-            <br />
-            <p>Le numero de la carte: {card.card_number} </p>
-            <br />
-            {/* Créations des codes-qr et codes-barres à partir du numéro de carte de fidélité  */}
-            <ReactQR value={card.card_number} />
-            <br />
-            <Barcode value={card.card_number} />
-          </li>
-        ))}
-      </ul>
+      <h3>Tes cartes:</h3>
+      {loading ? (
+        <p>Chargement...</p>
+      ) : (
+        <ul>
+          {cards.map((card) => (
+            <li key={card.card_id}>
+              <strong>{card.establishment}</strong>{" "}
+              <p>La date d'expiration: {card.expiry_date}</p>
+              <br />
+              <p>Le numero de la carte: {card.card_number} </p>
+              <br />
+              {/* Créations des codes-qr et codes-barres à partir du numéro de carte de fidélité  */}
+              <ReactQR value={card.card_number} />
+              <br />
+              <Barcode value={card.card_number} />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

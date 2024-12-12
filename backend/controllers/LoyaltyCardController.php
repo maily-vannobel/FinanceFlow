@@ -45,4 +45,17 @@ class LoyaltyCardController {
         }
     }
 
+    public function delete_loyalty_card() {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $loyaltyCardModel = new LoyaltyCard();
+        $userId = $data["user_id"];
+        $cardNumber = $data["card_number"];
+        $deletedRows = $loyaltyCardModel->delete_card_by_user_and_number($userId, $cardNumber);
+        if($deletedRows > 0) {
+            echo json_encode(["success" => true, "message" => "La carte a été supprimée"]);
+        } else {
+            echo json_encode(["error" => "La carte n'a pas été retrouvée"]);
+        }
+    }
+
  }

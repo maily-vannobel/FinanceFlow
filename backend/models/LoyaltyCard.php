@@ -29,5 +29,6 @@ class LoyaltyCard extends Model {
    public function delete_card_by_user_and_number($userId,$cardNumber) {
     $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE user_id = :user_id AND card_number = :card_number");
     $stmt->execute(["user_id" => $userId, "card_number" => $cardNumber]);
+    return $stmt->rowCount(); 
    }
 }
