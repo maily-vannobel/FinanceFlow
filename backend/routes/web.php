@@ -19,4 +19,8 @@
         "method" => "get_loyalty_cards",
         'arguments' => ['user_id'] //méthode avec un paramétre user_id
     ],
+    "deleteCard" => [
+        "controller" => "LoyaltyCardController",
+        "method" => "delete_loyalty_card"
+    ]
 ];

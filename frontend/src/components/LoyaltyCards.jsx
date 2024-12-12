@@ -26,6 +26,7 @@ const LoyaltyCards = () => {
   }, []);
   //Envoi d'une requête GET a l'endpoint pour récuperer les cartes de fidélité d'un utilisateur, avec gestion des erreurs
   const fetchCards = async () => {
+    setLoading(true);
     try {
       const response = await axios.get("http://localhost:8000/getUserCards", {
         params: { user_id: currentUserId },
@@ -88,6 +89,34 @@ const LoyaltyCards = () => {
   if (!currentUserId) {
     return <p>Veuillez vous connecter pour gérer vos cartes de fidélité.</p>;
   }
+  //Cette function envoie une requête DELETE pour supprimer une carte de fidélité choisi par l'utilisateur
+  const handleDelete = async (cardNumber) => {
+    //L'onglet de la confirmation s'affiche avec le message pour utilisateur
+    const confirmDelete = window.confirm(
+      "Êtes-vous sûre de vouloir supprimer cette carte?"
+    );
+    if (!confirmDelete) {
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await axios.delete("http://localhost:8000/deleteCard", {
+        data: { user_id: currentUserId, card_number: cardNumber },
+        withCredentials: true,
+      });
+      if (response.data.success) {
+        setSuccess("La carte a été supprimée");
+        fetchCards();
+      }
+    } catch (err) {
+      const errorMessage =
+        err.response?.data?.error ||
+        "Erreur lors de la suppression de la carte";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -136,6 +165,7 @@ const LoyaltyCards = () => {
               <ReactQR value={card.card_number} />
               <br />
               <Barcode value={card.card_number} />
+              <button type="delete">Supprimer</button>
             </li>
           ))}
         </ul>
