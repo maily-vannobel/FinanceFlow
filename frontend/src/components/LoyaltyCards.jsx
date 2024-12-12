@@ -106,6 +106,7 @@ const LoyaltyCards = () => {
       });
       if (response.data.success) {
         setSuccess("La carte a été supprimée");
+        setTimeout(5000);
         fetchCards();
       }
     } catch (err) {
@@ -165,7 +166,13 @@ const LoyaltyCards = () => {
               <ReactQR value={card.card_number} />
               <br />
               <Barcode value={card.card_number} />
-              <button type="delete">Supprimer</button>
+              <button
+                type="button"
+                onClick={() => handleDelete(card.card_number)}
+                disabled={loading}
+              >
+                Supprimer
+              </button>
             </li>
           ))}
         </ul>
