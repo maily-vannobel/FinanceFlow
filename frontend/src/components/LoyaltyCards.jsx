@@ -54,6 +54,10 @@ const LoyaltyCards = () => {
       );
       return;
     }
+    if (cardNumber.length < 8) {
+      setError("Le numero de la carte doit contenir au moins 8 chiffres");
+      return;
+    }
     setLoading(true);
     try {
       const response = await axios.post(
@@ -93,7 +97,7 @@ const LoyaltyCards = () => {
   const handleDelete = async (cardNumber) => {
     //L'onglet de la confirmation s'affiche avec le message pour utilisateur
     const confirmDelete = window.confirm(
-      "Êtes-vous sûre de vouloir supprimer cette carte?"
+      "Êtes-vous sûre de vouloir supprimer cette carte ?"
     );
     if (!confirmDelete) {
       return;
@@ -118,7 +122,6 @@ const LoyaltyCards = () => {
       setLoading(false);
     }
   };
-
   return (
     <div>
       <h2>Les Cartes de Fidélité</h2>

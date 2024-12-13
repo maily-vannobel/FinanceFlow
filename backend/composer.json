@@ -1,0 +1,20 @@
+{
+  "name": "financeflow/backend",
+  "description": "QR and Barcode entcripter",
+  "type": "project",
+  "require": {
+    "picqer/php-barcode-generator": "^2.2",
+    "khanamiryan/qrcode-detector-decoder": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Financleflow\\Backend\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "pawel-barc",
+      "email": "pawel-barc@laplateforme.io"
+    }
+  ]
+}
