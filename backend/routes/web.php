@@ -22,5 +22,9 @@
     "deleteCard" => [
         "controller" => "LoyaltyCardController",
         "method" => "delete_loyalty_card"
+    ],
+    "process-image" => [
+        "controller" => "ImageUploadController",
+        "method" => "process-image"
     ]
 ];

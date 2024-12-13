@@ -1,6 +1,11 @@
 <?php
 
 require_once "models/LoyaltyCard.php";
+require_once "ImageUploadController.php";
+require_once "vendor/autoload.php";
+
+use Zxing\Qrreader;
+use Picqer\Barcode\BarcodeReader;
 
 class LoyaltyCardController {
     //Cette méthode gère l'ajout des cartes de fidélité pour les utilisateurs
@@ -44,7 +49,7 @@ class LoyaltyCardController {
             echo json_encode(["error" => "Aucune carte de fidélité"]);
         }
     }
-
+    //Cette méthode permet de supprimer les cartes de fidélité selon l'id de l'utilisateur
     public function delete_loyalty_card() {
         $data = json_decode(file_get_contents("php://input"), true);
         $loyaltyCardModel = new LoyaltyCard();
@@ -55,6 +60,24 @@ class LoyaltyCardController {
             echo json_encode(["success" => true, "message" => "La carte a été supprimée"]);
         } else {
             echo json_encode(["error" => "La carte n'a pas été retrouvée"]);
+        }
+    }
+    //Cette méthod permet de lire les codes barres et QR du l'image téléchargé par l'utilisateur
+    public function read_card_from_image($imagePath) {
+        try{
+            $qrReader = new QrReader($imagePath);
+            $qrResult = $qrReader->text();
+            if(!empty($qrResult)) {
+                return $qrResult;
+            }
+            $barcodeReader = new BarcodeReader($imagePath);
+            $barcodeResult = $barcodeReader->decode($imagePath);
+            if(!empty($barcodeResult)){
+                return $barcodeResult[0];
+            }
+            return false;
+        }catch (Exception $e){
+            return false;
         }
     }
 
