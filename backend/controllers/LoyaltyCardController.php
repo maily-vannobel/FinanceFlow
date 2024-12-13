@@ -81,4 +81,49 @@ class LoyaltyCardController {
         }
     }
 
+    //Cette méthod verifie le numéro de la carte lu à partir du l'image, puis crée la carte de fidélité dans la base de données
+    public function create_card_from_image(){
+        //Récupere et décode les données json envoyées par l'utilisateur
+        $data = json_decode(file_get_contents("php://input", true));
+        if(!isset($data["image_path"]) || empty($data["user_id"])) {
+            http_response_code(404);
+            echo json_encode(["error" => "L'image et l'id d'utilisateur sont requis"]);
+            return;
+        }
+        //Assigne les données aux variables
+        $imagePath = $data["image_path"];
+        $userId = $data["user_id"];
+        $establishment = $data["establishment"] ?? "Aucun";
+        $expiryDate = $data["expiry_date"] ?? "Aucun";
+
+        //Récupere le numéro de la carte en utilisant l'image envoyée
+        $cardNumber = $this->read_card_from_image($imagePath);
+         //Si le numéro de la carte est trouvé, on continue le traitement
+        if($cardNumber) {
+            //Prépare les données pour la création de la carte de fidélité
+            $data = [
+                "card_number" => $cardNumber,
+                "user_id" => $userId,
+                "establishment" => $establishment,
+                "expiry_date" => $expiryDate
+            ];
+            $loyaltyCardModel = new LoyaltyCard();
+            $existingCard = $loyaltyCardModel->find_card_by_number_and_user($userId, $cardNumber);
+            if($existingCard) {
+                http_response_code(400);
+                echo json_encode(["error" => "Le numéro de la carte existe déjà pour cet utilisateur"]);
+                return;
+            }
+            //Si la carte n'existe pas encore, ajout la nouvelle carte à la base de données
+            $loyaltyCardModel->create_card($Carddata);
+            echo json_encode(["success" => "La carte a été ajouté"]);
+
+        }else{
+            http_response_code(400);
+            echo json_encode(["error" => "Le numéro de la carte n'a pas pu être lu"]);
+            return;
+        }
+    }
+       
+
  }
