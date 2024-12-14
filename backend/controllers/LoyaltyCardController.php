@@ -7,7 +7,7 @@ require_once "vendor/autoload.php";
 use Zxing\Qrreader;
 use Picqer\Barcode\BarcodeReader;
 
-class LoyaltyCardController {
+class LoyaltyCardController { 
     //Cette méthode gère l'ajout des cartes de fidélité pour les utilisateurs
     public function create_card() {
         //Récupere et décode les données json envoyées par l'utilisateur
@@ -115,7 +115,7 @@ class LoyaltyCardController {
                 return;
             }
             //Si la carte n'existe pas encore, ajout la nouvelle carte à la base de données
-            $loyaltyCardModel->create_card($Carddata);
+            $loyaltyCardModel->create_card($data);
             echo json_encode(["success" => "La carte a été ajouté"]);
 
         }else{

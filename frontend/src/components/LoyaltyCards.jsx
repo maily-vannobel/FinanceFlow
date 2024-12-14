@@ -3,7 +3,7 @@ import axios from "axios";
 import ReactQR from "react-qr-code";
 import Barcode from "react-barcode";
 
-//Création d'un component 'LoyaltyCards' avec des états initiaux pour gérer le numéro de carte, les cartes de fidélité et les erreurs
+//Création d'un component 'LoyaltyCards' avec des états initiaux pour gérer le numéro de carte, les cartes de fidélité, les erreurs et d'autres
 const LoyaltyCards = () => {
   const [cardNumber, setCardNumber] = useState("");
   const [cardEstablishment, setCardEstablishment] = useState("");
@@ -12,6 +12,7 @@ const LoyaltyCards = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   //today contient la date actuelle, et il va servir à gérer le calendrier
   const today = new Date().toISOString().split("T")[0];
   //L'identifiant de l'utilisateur est récupéré depuis le stockage local et assigné à une variable
@@ -122,6 +123,42 @@ const LoyaltyCards = () => {
       setLoading(false);
     }
   };
+  //Cette function charge une image, l'assigne un nom 'barcode_image' et envoi une requête post au backend
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      setError("Veuillez sélectionner un fichier image");
+      return;
+    }
+    setImageFile(file);
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("barcode_image", file);
+      const response = await axios.post(
+        "http://localhost:8000/uploadImage",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      //Si la reponse est positive le numero de la carte s'asssigne dans le setCardNumber
+      if (response.data.success) {
+        setCardNumber(response.data.barecode || response.data.qr_code);
+        setSuccess(
+          "Le code a été lu avec succès, veuillez complèter les détails"
+        );
+        setError(null);
+      } else {
+        setError(response.data.error || "Aucun code détecté");
+      }
+    } catch (err) {
+      setError("Erreur lors du téléchargement de l'image");
+    } finally {
+      setLoading(false);
+      
+      // setError(null);
+      // setSuccess(null);
+    }
+  };
   return (
     <div>
       <h2>Les Cartes de Fidélité</h2>
@@ -151,6 +188,10 @@ const LoyaltyCards = () => {
           {loading ? "Chargement..." : "Ajouter une carte"}
         </button>
       </form>
+      {/* L'input qui gére le téléchargèment de l'image, il utilise le function handleImageUpload */}
+      <h3>Charger une image</h3>
+      <input type="file" accept="image */" onChange={handleImageUpload} />
+      {success && <p>{success}</p>}
       {error && <p>{error}</p>}
       {/* Les cartes de fidélité disponibles de l'utilisateur seront affichées sur la page, et un code QR sera généré pour chacune d'elles */}
       <h3>Tes cartes:</h3>

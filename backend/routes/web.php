@@ -23,8 +23,8 @@
         "controller" => "LoyaltyCardController",
         "method" => "delete_loyalty_card"
     ],
-    "process-image" => [
+    "uploadImage" => [
         "controller" => "ImageUploadController",
-        "method" => "process-image"
+        "method" => "menage_image"
     ]
 ];
