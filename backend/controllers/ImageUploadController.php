@@ -35,7 +35,7 @@ class ImageUploadController {
                 }
                 //Si le code QR n'etais pas présent dans l'image une vérification suit si l'image contient un code-barres
                 $barcodeReader = new BarcodeReader();
-                $results = $barecodeReader->decode($_FILES["barcode_image"]["tmp_name"]);
+                $results = $barcodeReader->decode($_FILES["barcode_image"]["tmp_name"]);
                 
                 if(empty($results)) {
                     echo json_encode(["error" => "Aucun code-barres ni QR code n'a été détecté dans le fichier"]);

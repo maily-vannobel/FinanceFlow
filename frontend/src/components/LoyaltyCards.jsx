@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ReactQR from "react-qr-code";
 import Barcode from "react-barcode";
-
+import { Scanner } from "@yudiel/react-qr-scanner";
 //Création d'un component 'LoyaltyCards' avec des états initiaux pour gérer le numéro de carte, les cartes de fidélité, les erreurs et d'autres
 const LoyaltyCards = () => {
   const [cardNumber, setCardNumber] = useState("");
@@ -13,6 +13,7 @@ const LoyaltyCards = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [scanning, setScanning] = useState(false);
   //today contient la date actuelle, et il va servir à gérer le calendrier
   const today = new Date().toISOString().split("T")[0];
   //L'identifiant de l'utilisateur est récupéré depuis le stockage local et assigné à une variable
@@ -38,7 +39,7 @@ const LoyaltyCards = () => {
       setSuccess(null);
     } catch (err) {
       setError(
-        err.response?.data?.message ||
+        err.response?.data?.error ||
           "L'erreur lors de la récupération des cartes"
       );
       setCards([]);
@@ -111,7 +112,7 @@ const LoyaltyCards = () => {
       });
       if (response.data.success) {
         setSuccess("La carte a été supprimée");
-        setTimeout(5000);
+        setTimeout(() => setSuccess(null), 5000);
         fetchCards();
       }
     } catch (err) {
@@ -146,6 +147,7 @@ const LoyaltyCards = () => {
         setSuccess(
           "Le code a été lu avec succès, veuillez complèter les détails"
         );
+        setTimeout(() => setSuccess(null), 6000);
         setError(null);
       } else {
         setError(response.data.error || "Aucun code détecté");
@@ -154,14 +156,55 @@ const LoyaltyCards = () => {
       setError("Erreur lors du téléchargement de l'image");
     } finally {
       setLoading(false);
-      
-      // setError(null);
-      // setSuccess(null);
     }
+  };
+  //Cette méthode sera appeller pour récuperer le numèro de la carte et le transmettre dans le formulaire
+  const handleBarcodeScan = async (result) => {
+    if (!result || !result[0]) {
+      setError("Scan error: No result found");
+      return;
+    }
+    const scannedCardNumber = result[0].rawValue;
+    setCardNumber(scannedCardNumber);
+    setSuccess(
+      "Le code a été scanné avec succès, veuillez compléter les détails"
+    );
+    setTimeout(() => setSuccess(null), 5000);
+    setError(null);
+  };
+
+  const handleError = (error) => {
+    setError(`Erreur lors du scan : ${error}`); //Template literals au lieu de: "Erreur lors du scan:" + erreur
+    setTimeout(() => setError(null), 3000);
   };
   return (
     <div>
       <h2>Les Cartes de Fidélité</h2>
+      {/* Les styles temporairement mis dans le component */}
+      <h3>Scanner le code-barres</h3>
+      {scanning && (
+        <div
+          style={{
+            width: "60%",
+            height: "auto",
+            margin: "0 auto",
+            padding: "40px",
+            overflow: "hidden",
+            position: "relative",
+          }}
+        >
+          {" "}
+          {/*La bibliothèque 'Scanner' permet de gérer le scanner de cartes via le caméra de l'appareil*/}
+          <Scanner
+            onScan={(result) => handleBarcodeScan(result)}
+            onError={handleError}
+          />
+        </div>
+      )}
+      <button onClick={() => setScanning((prev) => !prev)}>
+        {scanning ? "Arrêter le scan" : "Commencer le scan"}
+      </button>
+
       {/* Dans le formulaire, les données seront saisi. Après avoir cliqué sur le bouton, la fonction handleSubmit sera déclenchée
        Si l'utilisateur est connecté, la carte sera enregistrée dans la base de données */}
       <form onSubmit={handleSubmit}>
@@ -191,6 +234,8 @@ const LoyaltyCards = () => {
       {/* L'input qui gére le téléchargèment de l'image, il utilise le function handleImageUpload */}
       <h3>Charger une image</h3>
       <input type="file" accept="image */" onChange={handleImageUpload} />
+      <h3>Scanner le code-barres</h3>
+
       {success && <p>{success}</p>}
       {error && <p>{error}</p>}
       {/* Les cartes de fidélité disponibles de l'utilisateur seront affichées sur la page, et un code QR sera généré pour chacune d'elles */}

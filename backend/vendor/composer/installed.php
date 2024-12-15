@@ -3,7 +3,7 @@
         'name' => 'financeflow/backend',
         'pretty_version' => 'dev-feat/pawel-loyalty-card',
         'version' => 'dev-feat/pawel-loyalty-card',
-        'reference' => '065920450b26d35535ce7cc91db04daa7f02af81',
+        'reference' => 'c577b1d8a54a5bce7e510fe611c083bcac9a3cd8',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'financeflow/backend' => array(
             'pretty_version' => 'dev-feat/pawel-loyalty-card',
             'version' => 'dev-feat/pawel-loyalty-card',
-            'reference' => '065920450b26d35535ce7cc91db04daa7f02af81',
+            'reference' => 'c577b1d8a54a5bce7e510fe611c083bcac9a3cd8',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
