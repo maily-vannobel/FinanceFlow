@@ -7,12 +7,8 @@ class User extends Model {
     public function __construct() {
         parent::__construct('users');
     }
-<<<<<<< HEAD
 
     //////////////////////CREATE//////////////////////////////////
-=======
-                //////////////////////CREATE//////////////////////////////////
->>>>>>> feat/pawel-loyalty-card
 
     // Cette méthode permet de créer un nouvel enregistrement dans la table "users"
     public function create($data) {
@@ -25,11 +21,7 @@ class User extends Model {
         $stmt->execute($data);
     }
 
-<<<<<<< HEAD
     //////////////////////READ//////////////////////////////////
-=======
-             //////////////////////READ//////////////////////////////////
->>>>>>> feat/pawel-loyalty-card
 
     // Cette méthode recherche un utilisateur dans la table "users" par son adresse email
     public function find_by_email($email) {
@@ -39,16 +31,11 @@ class User extends Model {
     }
 
     // Cette méthode recherche un utilisateur dans la table "users" par son ID
-<<<<<<< HEAD
     public function find_by_id($userId) {
-=======
-    public function find_by_user_id($userId) {
->>>>>>> feat/pawel-loyalty-card
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $userId]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-<<<<<<< HEAD
 
     // Cette méthode recherche tous les utilisateurs dans la table "users"
     public function find_all() {
@@ -62,36 +49,15 @@ class User extends Model {
     public function update($id, $data) {
         $sets = [];
         foreach($data as $column => $value) {
-=======
-    // Cette méthode recherche tout les utilisateurs dans la table users
-    public function find_all() {
-        $stmt = $this->pdo->query("SELECT * FROM {$this->table}");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-                //////////////////////UPDATE//////////////////////////////////
-
-    // Cette méthode met à jour les données d'un utilisateurs identifié par ID dans la table users
-    public function update($id, $data) {
-        $sets = [];
-        foreach($data as $column =>$value){
->>>>>>> feat/pawel-loyalty-card
             $sets[] = "$column = :$column";
         }
         $sets = implode(", ", $sets);
         $stmt = $this->pdo->prepare("UPDATE {$this->table} SET $sets WHERE id = :id");
         $data["id"] = $id;
         $stmt->execute($data);
-<<<<<<< HEAD
     }
 
     //////////////////////DELETE//////////////////////////////////
-=======
-
-    }
-
-                //////////////////////DELETE//////////////////////////////////
->>>>>>> feat/pawel-loyalty-card
 
     public function delete($id) {
         $stmt = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = :id");
