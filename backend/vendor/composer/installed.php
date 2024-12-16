@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'financeflow/backend',
+        'pretty_version' => 'dev-feat/pawel-loyalty-card',
+        'version' => 'dev-feat/pawel-loyalty-card',
+        'reference' => 'c577b1d8a54a5bce7e510fe611c083bcac9a3cd8',
+        'type' => 'project',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        'financeflow/backend' => array(
+            'pretty_version' => 'dev-feat/pawel-loyalty-card',
+            'version' => 'dev-feat/pawel-loyalty-card',
+            'reference' => 'c577b1d8a54a5bce7e510fe611c083bcac9a3cd8',
+            'type' => 'project',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'khanamiryan/qrcode-detector-decoder' => array(
+            'pretty_version' => '2.0.2',
+            'version' => '2.0.2.0',
+            'reference' => '8d53cbecaa32f1e56a3be58bb3055ac31774ecd0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../khanamiryan/qrcode-detector-decoder',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'picqer/php-barcode-generator' => array(
+            'pretty_version' => 'v2.4.2',
+            'version' => '2.4.2.0',
+            'reference' => 'e9d39681f617705492b609fc3fc58465ef88e8fd',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../picqer/php-barcode-generator',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

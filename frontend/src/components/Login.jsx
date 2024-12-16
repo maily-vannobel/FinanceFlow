@@ -33,6 +33,8 @@ const Login = () => {
           { withCredentials: true }
         );
         if (response.data.success) {
+          //Après la connexion, l'utilisateur reçoit son identifiant, qui sera enregistré dans le stockage local
+          localStorage.setItem("currentUserId", response.data.user_id);
           alert("Connexion a réussie !");
           navigate("/dashboard");
         }

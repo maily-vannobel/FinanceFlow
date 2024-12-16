@@ -18,10 +18,5 @@ class Model{
             die("L'erreur lors de la connexion à la base de données:" .$e->getMessage());
         }
     }
-    // Méthode exemple pour récupérer toutes les données d'une table
-    public function all()
-    {
-        $stmt = $this->pdo->query("SELECT * FROM {$this->table}");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+
 }
