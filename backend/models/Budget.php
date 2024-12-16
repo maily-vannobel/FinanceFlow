@@ -73,16 +73,15 @@ class Budget extends Model {
     }
 
     //* 3. Méthode pour mettre à jour un budget
-    public function update($id, $amount_limit, $period, $start_date, $end_date, $year, $month) {
+    public function update($amount_limit, $period, $start_date, $end_date, $year, $month) {
 
-        $stmt = $this->pdo->prepare("UPDATE budget SET amount_limit = :amount_limit, period = :period, start_date = :start_date, end_date = :end_date, year = :year, month = :month WHERE id = :id");
+        $stmt = $this->pdo->prepare("UPDATE budgets SET amount_limit = :amount_limit, period = :period, start_date = :start_date, end_date = :end_date, year = :year, month = :month WHERE id = :id");
         $stmt->bindParam(':amount_limit', $amount_limit);
         $stmt->bindParam(':period', $period);
         $stmt->bindParam(':start_date', $start_date);
         $stmt->bindParam(':end_date', $end_date);
         $stmt->bindParam(':year', $year);
         $stmt->bindParam(':month', $month);
-        $stmt->bindParam(':id', $id);
         $stmt->execute();
 
         // Vérifier si la mise à jour a eu lieu (retourne le nombre de lignes affectées)
@@ -94,9 +93,9 @@ class Budget extends Model {
     }
 
     //* 4. Méthode pour supprimer un budget
-    public function delete($id) {
-    $stmt = $this->pdo->prepare("DELETE FROM budget WHERE id = :id");
-    $stmt->bindParam(':id', $id);       // Lier l'ID à la requête SQL
+    public function delete($budget_id) {
+    $stmt = $this->pdo->prepare("DELETE FROM budgets WHERE budget_id = :budget_id");
+    $stmt->bindParam(':budget_id', $budget_id);       // Lier l'ID à la requête SQL
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {

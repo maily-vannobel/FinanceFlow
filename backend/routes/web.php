@@ -180,4 +180,16 @@ $routes = [
         "controller" => "BudgetController",
         "method" => "readBudget"
     ],
+    "budgets" => [
+        "controller" => "BudgetController",
+        "method" => "createBudget"
+    ],
+    "budgets" => [
+        "controller" => "BudgetController",
+        "method" => "updateBudget"
+    ],
+    "budgets" => [
+        "controller" => "BudgetController",
+        "method" => "deleteBudget"
+    ],
 ];

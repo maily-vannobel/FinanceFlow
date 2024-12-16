@@ -47,7 +47,7 @@ class BudgetController extends Controller {
         $user_id = $_POST['user_id'];
 
         // Appeler la méthode update du modèle pour mettre à jour le budget
-        $updated_budget = $this->model->update($id, $amount_limit, $period, $start_date, $end_date, $year, $month, $user_id);
+        $updated_budget = $this->model->update($amount_limit, $period, $start_date, $end_date, $year, $month);
 
         // Retourner une réponse avec le budget mis à jour
         $this->json_response($updated_budget, 200);
@@ -55,11 +55,17 @@ class BudgetController extends Controller {
 
     //* 4. Méthode pour appeler la suppression des données
     public function deleteBudget() {
+
+        // Vérifier si le paramètre 'budget_id' existe dans la requête GET
+        if (!isset($_GET['budget_id'])) {
+            $this->json_response(['error' => 'Paramètre budget_id manquant'], 400);
+            return;
+        }
         // Récupérer l'ID du budget à supprimer depuis la requête GET
-        $id = $_GET['id'];
+        $budget_id = $_GET['budget_id'];
 
         // Appeler la méthode delete du modèle pour supprimer le budget
-        $deleted_budget = $this->model->delete($id);
+        $deleted_budget = $this->model->delete($budget_id);
 
         // Retourner une réponse en fonction du résultat de la suppression
         if ($deleted_budget) {
@@ -68,5 +74,4 @@ class BudgetController extends Controller {
             $this->json_response(['error' => 'Erreur lors de la suppression du budget'], 500);
         }
     }
-
 }
