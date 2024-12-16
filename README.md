@@ -1,6 +1,10 @@
 # Fincance Flow
 
-Dans cette branche, on se concentre dans un premier temps sur le backend :
+Dans cette branche, on se concentre dans un premier temps sur le backend puis sur on va aller récupérer les métohdes pour les assigner à des éléments dans le frontend.
+
+## ⚙️ Backend
+
+Mais avant toute chose, concentrons nous sur le Backend !
 
 ### Etape 1
 
@@ -18,3 +22,17 @@ Dans cette branche, on se concentre dans un premier temps sur le backend :
   - DELETE
 - dans le controller, ajouter les méthode pour les requêtes créer
 - ajouter les routes et les méthodes de chaque requête
+
+<br>
+
+## 🖼️ Frontend
+
+Et maintenant le Frontend !
+
+### Etape 1
+
+- liste à venir
+
+### Etape 2
+
+- liste à venir
