@@ -86,12 +86,13 @@ const Register = () => {
           values,
           { withCredentials: true }
         );
+        console.log("Server response:", response.data);
         if (response.data.success) {
           alert("L'inscription a réussi");
           navigate("/login");
         }
       } catch (error) {
-        setError(error.response?.data?.message || "L'inscription a échoué");
+        setError(error.response?.data?.error || "L'inscription a échoué");
       }
     },
   });
@@ -218,7 +219,7 @@ const Register = () => {
           <div>{formik.errors.repeatPassword}</div>
         ) : null}
       </label>
-      {error && <div>{error} </div>}
+      {error && <div>{error}</div>}
       <button type="submit" disabled={formik.isSubmitting}>
         Inscrivez-vous
       </button>
