@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 //Création d'un composant Login, suivi de l'application du hook 'useFormik' fourni par la bibliothèque Formik,
 // et définition des clés pour les valeurs initiales du formulaire.
@@ -33,6 +34,8 @@ const Login = () => {
           { withCredentials: true }
         );
         if (response.data.success) {
+          //Après la connexion, l'utilisateur reçoit son identifiant, qui sera enregistré dans les cookies
+          Cookies.set("currentUserId", response.data.user_id, { expires: 7 });
           alert("Connexion a réussie !");
           navigate("/dashboard");
         }

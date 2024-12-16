@@ -24,12 +24,9 @@ class LoginController extends Controller {
         }
         //Enregistrement de l'idéntifiant  de l'utilisateur dans la session
         $_SESSION["user_id"] = $registeredUser["user_id"];
-        //La function setcookie définit un cookie de session dans la navigateur d'utilisateur
-        setcookie("PHPSESSID", session_id(), [
-            "httponly" => true,//Le cookie n'est pas accessible via JavaScript
-            "samesite" => "Lax",//le cookie est envoyé uniquement dans des cas sûrs
-            "secure" => false// pour HTTP et non HTTPS
+        echo json_encode([
+            "success" => "Connexion réussie",
+            "user_id" => $registeredUser['user_id'],
         ]);
-        echo json_encode(["success" => "Connexion réussie"]);
     }
 }
