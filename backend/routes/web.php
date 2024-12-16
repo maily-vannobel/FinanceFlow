@@ -118,8 +118,8 @@ $routes = [
         "method" => "show"
     ],
     "user-subcategories/by-category" => [
-    "controller" => "UserSubcategoryController",
-    "method" => "findByUserCategory"
+        "controller" => "UserSubcategoryController",
+        "method" => "findByUserCategory"
     ],
     
     "user-subcategories/create" => [
@@ -156,8 +156,7 @@ $routes = [
         "controller" => "AccountController",
         "method" => "destroy"
     ],
-
-        "addCard" => [
+    "addCard" => [
         "controller" => "LoyaltyCardController",
         "method" => "create_card"
     ],
