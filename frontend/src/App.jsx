@@ -1,10 +1,10 @@
-import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import LoyaltyCards from "./components/LoyaltyCards";
+import Logout from "./components/Logout";
 // import "./App.css";
 
 // Composant principal de l'application
@@ -29,6 +29,9 @@ function App() {
             </li>
             <li>
               <Link to="/loyalty-cards">Les cartes de fidélité</Link>
+            </li>
+            <li>
+              <Logout />
             </li>
           </ul>
         </nav>

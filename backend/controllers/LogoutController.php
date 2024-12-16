@@ -1,5 +1,5 @@
 <?php
-
+require_once "Controller.php";
 require_once "models/User.php";
 
 class LogoutController extends Controller {
