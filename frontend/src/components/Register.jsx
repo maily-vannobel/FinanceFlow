@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 //Création d'un composant Register, suivi de l'application du hook 'useFormik' fourni par la bibliothèque Formik,
 // et définition des clés pour les valeurs initiales du formulaire.
-
 const Register = () => {
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       firstname: "",
@@ -54,15 +56,18 @@ const Register = () => {
           values,
           { withCredientals: true }
         );
-        alert("L'inscription a réussi");
+        if (response.data.success) {
+          alert("L'inscription a réussi");
+          navigate("/login");
+        }
       } catch (error) {
-        alert("L'inscription a échoué");
+        setError(error.response?.data?.message || "L'inscription a échoué");
       }
     },
   });
 
   return (
-    //Ce fragment de code crée des champs de formulaire permettant à l'utilisateur de saisir ses données d'inscription
+    //Ce fragment de code crée des champs du formulaire permettant à l'utilisateur de saisir ses données d'inscription
     //Formik suit l'utilisateur et gère les éventuelles erreurs
     <form onSubmit={formik.handleSubmit}>
       <label>
@@ -104,18 +109,23 @@ const Register = () => {
           <div>{formik.errors.email}</div>
         ) : null}
       </label>
-      Le mot de passe:
-      <input
-        type="password"
-        name="password"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.password}
-      />
-      {formik.touched.password && formik.errors.password ? (
-        <div>{formik.errors.password}</div>
-      ) : null}
-      <button type="submit">Inscrivez-vous</button>
+      <label>
+        Le mot de passe:
+        <input
+          type="password"
+          name="password"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.password}
+        />
+        {formik.touched.password && formik.errors.password ? (
+          <div>{formik.errors.password}</div>
+        ) : null}
+      </label>
+      {error && <div>{error} </div>}
+      <button type="submit" disabled={formik.isSubmitting}>
+        Inscrivez-vous
+      </button>
     </form>
   );
 };

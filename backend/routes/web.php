@@ -7,4 +7,8 @@
         "method" => "register"
         // 'arguments' => ['user_id'] Un exemple d'utilisation des functions avec des paramètres
     ],
+    "login" => [
+        "controller" => "LoginController",
+        "method" => "login"
+    ],
 ];
