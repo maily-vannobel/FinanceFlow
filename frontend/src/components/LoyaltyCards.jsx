@@ -3,6 +3,7 @@ import axios from "axios";
 import ReactQR from "react-qr-code";
 import Barcode from "react-barcode";
 import { Scanner } from "@yudiel/react-qr-scanner";
+import Cookies from "js-cookie";
 //Création d'un component 'LoyaltyCards' avec des états initiaux pour gérer le numéro de carte, les cartes de fidélité, les erreurs et d'autres
 const LoyaltyCards = () => {
   const [cardNumber, setCardNumber] = useState("");
@@ -17,20 +18,21 @@ const LoyaltyCards = () => {
   //today contient la date actuelle, et il va servir à gérer le calendrier
   const today = new Date().toISOString().split("T")[0];
   //L'identifiant de l'utilisateur est récupéré depuis le stockage local et assigné à une variable
-  const currentUserId = localStorage.getItem("currentUserId");
+  const currentUserId = Cookies.get("currentUserId");
   // useEffect déclenche dès le début le chargement des cartes existantes, et cela ne se fait qu'une seule fois, comme l'indique le tableau vide
   useEffect(() => {
-    if (!currentUserId || currentUserId === "undefined") {
+    if (!currentUserId) {
       setError("Utilisateur non connecté");
     } else {
       fetchCards();
     }
-  }, []);
+  }, [currentUserId]);
   //Envoi d'une requête GET a l'endpoint pour récuperer les cartes de fidélité d'un utilisateur, avec gestion des erreurs
   const fetchCards = async () => {
     setLoading(true);
     try {
       const response = await axios.get("http://localhost:8000/getUserCards", {
+        // params: { user_id: currentUserId },
         params: { user_id: currentUserId },
         withCredentials: true,
       });
@@ -107,7 +109,7 @@ const LoyaltyCards = () => {
     setLoading(true);
     try {
       const response = await axios.delete("http://localhost:8000/deleteCard", {
-        data: { user_id: currentUserId, card_number: cardNumber },
+        data: { card_number: cardNumber },
         withCredentials: true,
       });
       if (response.data.success) {
