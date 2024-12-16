@@ -17,7 +17,7 @@ const LoyaltyCards = () => {
   const [scanning, setScanning] = useState(false);
   //today contient la date actuelle, et il va servir à gérer le calendrier
   const today = new Date().toISOString().split("T")[0];
-  //L'identifiant de l'utilisateur est récupéré depuis le stockage local et assigné à une variable
+  //L'identifiant de l'utilisateur est récupéré depuis le cookie et assigné à une variable
   const currentUserId = Cookies.get("currentUserId");
   // useEffect déclenche dès le début le chargement des cartes existantes, et cela ne se fait qu'une seule fois, comme l'indique le tableau vide
   useEffect(() => {
