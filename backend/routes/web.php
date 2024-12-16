@@ -173,5 +173,11 @@ $routes = [
     "uploadImage" => [
         "controller" => "ImageUploadController",
         "method" => "menage_image"
-    ]
+    ],
+
+    // Route pour les budgets
+    "budgets" => [
+        "controller" => "BudgetController",
+        "method" => "readBudget"
+    ],
 ];
