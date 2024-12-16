@@ -11,6 +11,10 @@ $routes = [
         "controller" => "LoginController",
         "method" => "login"
     ],
+    "logout" => [
+        "controller" => "LogoutController",
+        "method" => "logout"
+    ],
     
     // CRUD transactions
     "transactions" => [ 
@@ -113,7 +117,7 @@ $routes = [
         "controller" => "UserSubcategoryController",
         "method" => "show"
     ],
-"user-subcategories/by-category" => [
+    "user-subcategories/by-category" => [
     "controller" => "UserSubcategoryController",
     "method" => "findByUserCategory"
     ],

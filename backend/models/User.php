@@ -7,7 +7,8 @@ class User extends Model {
     public function __construct() {
         parent::__construct('users');
     }
-                //////////////////////CREATE//////////////////////////////////
+
+    //////////////////////CREATE//////////////////////////////////
 
     // Cette méthode permet de créer un nouvel enregistrement dans la table "users"
     public function create($data) {
@@ -20,7 +21,7 @@ class User extends Model {
         $stmt->execute($data);
     }
 
-             //////////////////////READ//////////////////////////////////
+    //////////////////////READ//////////////////////////////////
 
     // Cette méthode recherche un utilisateur dans la table "users" par son adresse email
     public function find_by_email($email) {
@@ -30,7 +31,7 @@ class User extends Model {
     }
 
     // Cette méthode recherche un utilisateur dans la table "users" par son ID
-    public function find_by_user_id($userId) {
+    public function find_by_id($userId) {
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $userId]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
