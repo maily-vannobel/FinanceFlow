@@ -13,8 +13,9 @@ const Register = () => {
     initialValues: {
       firstname: "",
       lastname: "",
-      city: "",
       address: "",
+      zipcode: "",
+      city: "",
       phone: "",
       email: "",
       password: "",
@@ -35,12 +36,16 @@ const Register = () => {
         .email("L'email n'est pas valide")
         .required("Ce champ est requis"),
 
-      city: Yup.string()
-        .min(2, "La ville doit contenir au moins deux caractères")
-        .required("Ce champ est requis"),
-
       address: Yup.string()
         .min(4, "L'adresse doit contenir au moins 4 caractères")
+        .required("Ce champ est requis"),
+
+      zipcode: Yup.string()
+        .min(4, "Le code postale doit contenir au moins quatre caractères")
+        .required("Ce champ est requis"),
+
+      city: Yup.string()
+        .min(2, "La ville doit contenir au moins deux caractères")
         .required("Ce champ est requis"),
 
       phone: Yup.string()
@@ -121,19 +126,6 @@ const Register = () => {
           <div>{formik.errors.lastname}</div>
         ) : null}
       </label>
-      <label htmlFor="city">
-        Ville:
-        <input
-          type="text"
-          name="city"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.city}
-        />
-        {formik.touched.city && formik.errors.city ? (
-          <div>{formik.errors.city}</div>
-        ) : null}
-      </label>
       <label htmlFor="address">
         Adresse:
         <input
@@ -147,11 +139,38 @@ const Register = () => {
           <div>{formik.errors.address}</div>
         ) : null}
       </label>
+      <label htmlFor="zipcode">
+        Code postale:
+        <input
+          type="text"
+          name="zipcode"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.zipcode}
+        />
+        {formik.touched.zipcode && formik.errors.zipcode ? (
+          <div>{formik.errors.zipcode}</div>
+        ) : null}
+      </label>
+      <label htmlFor="city">
+        Ville:
+        <input
+          type="text"
+          name="city"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.city}
+        />
+        {formik.touched.city && formik.errors.city ? (
+          <div>{formik.errors.city}</div>
+        ) : null}
+      </label>
+
       <label htmlFor="phone">
         Le numèro de télephone:
         <input
-          type="phone"
-          name="tel"
+          type="tel"
+          name="phone"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.phone}
@@ -184,6 +203,19 @@ const Register = () => {
         />
         {formik.touched.password && formik.errors.password ? (
           <div>{formik.errors.password}</div>
+        ) : null}
+      </label>
+      <label htmlFor="passsword">
+        Confirmez le mot de passe:
+        <input
+          type="password"
+          name="repeatPassword"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.repeatPassword}
+        />
+        {formik.touched.repeatPassword && formik.errors.repeatPassword ? (
+          <div>{formik.errors.repeatPassword}</div>
         ) : null}
       </label>
       {error && <div>{error} </div>}
