@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Ces en-têtes HTTP configurent le support CORS (Cross-Origin Resource Sharing)
 // pour permettre les requêtes provenant de http://localhost:5173
 header("Access-Control-Allow-Origin: http://localhost:5173");
@@ -34,5 +38,5 @@ if(isset($routes[$url])) {
     // Si aucune route correspondante n'est trouvée, on répond avec un code 404
 } else {
     http_response_code(404);
-    echo "La page n'a pas été trouvée";
+    echo json_encode(['error' => 'Route not found']);
 }
