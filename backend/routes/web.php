@@ -175,20 +175,20 @@ $routes = [
         "method" => "menage_image"
     ],
 
-    // Route pour les budgets
-    "budgets" => [
+    // Routes pour les budgets
+    "read_budgets" => [
         "controller" => "BudgetController",
         "method" => "readBudget"
     ],
-    "budgets" => [
+    "create_budget" => [
         "controller" => "BudgetController",
         "method" => "createBudget"
     ],
-    "budgets" => [
+    "update_budget" => [
         "controller" => "BudgetController",
         "method" => "updateBudget"
     ],
-    "budgets" => [
+    "delete_budget" => [
         "controller" => "BudgetController",
         "method" => "deleteBudget"
     ],
