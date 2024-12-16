@@ -34,7 +34,7 @@ const Login = () => {
         );
         if (response.data.success) {
           //Après la connexion, l'utilisateur reçoit son identifiant, qui sera enregistré dans les cookies
-          Cookies.set("currentUserId", response.data.user_id, { expires: 7 });
+          Cookies.set("currentUserId", response.data.user_id, { expires: 1 });
           alert("Connexion a réussie !");
           navigate("/dashboard");
         }
