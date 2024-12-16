@@ -6,6 +6,7 @@ require_once "models/User.php";
 class LoginController extends Controller {
     // Cette méthode gère la logique de connexion des utilisateurs.
     public function login() {
+        session_start();
         // Récupère et décode les données JSON envoyées par le client.
         $data = json_decode(file_get_contents('php://input'), true);
         // Vérifie si les champs sont remplis
@@ -21,6 +22,14 @@ class LoginController extends Controller {
             echo json_encode(["error" => "Email ou mot de passe incorrect"]);
             return;
         }
+        //Enregistrement de l'idéntifiant  de l'utilisateur dans la session
+        $_SESSION["user_id"] = $registeredUser["user_id"];
+        //La function setcookie définit un cookie de session dans la navigateur d'utilisateur
+        setcookie("PHPSESSID", session_id(), [
+            "httponly" => true,//Le cookie n'est pas accessible via JavaScript
+            "samesite" => "Lax",//le cookie est envoyé uniquement dans des cas sûrs
+            "secure" => false// pour HTTP et non HTTPS
+        ]);
         echo json_encode(["success" => "Connexion réussie"]);
     }
 }
