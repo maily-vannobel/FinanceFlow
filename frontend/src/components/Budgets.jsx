@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 const Budgets = () => {
   const [budgets, setBudgets] = useState("");
 
   const fetchBudgets = async () => {
     try {
-      const reponse = await fetch("http://localhost:8000/read_budgets");
+      const reponse = await fetch("http://localhost:8000/read_budgets", {
+        method: "GET", // Remplace par GET si nécessaire
+        credentials: "include", // Inclut les cookies si besoin
+      });
 
       const jsonData = await reponse.json();
       console.log(jsonData);

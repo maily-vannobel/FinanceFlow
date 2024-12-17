@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import LoyaltyCards from "./components/LoyaltyCards";
 import Budgets from "./components/Budgets";
+import Logout from "./components/Logout";
 // import "./App.css";
 
 // Composant principal de l'application
@@ -34,6 +35,9 @@ function App() {
             <li>
               <Link to="/budgets">Les budgets</Link>
             </li>
+            <li>
+              <Link to="/logout">Se déconnecter</Link>
+            </li>
           </ul>
         </nav>
         {/* Définition des routes pour l'application */}
@@ -44,6 +48,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/loyalty-cards" element={<LoyaltyCards />} />
           <Route path="/budgets" element={<Budgets />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </div>
     </>
