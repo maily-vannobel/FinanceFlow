@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+
 //Création d'un composant Login, suivi de l'application du hook 'useFormik' fourni par la bibliothèque Formik,
 // et définition des clés pour les valeurs initiales du formulaire.
 const Login = () => {
@@ -27,6 +28,7 @@ const Login = () => {
     //Envoi des données du formulaire au serveur via une requête POST, affichage des messages selon le resultat.
     onSubmit: async (values) => {
       try {
+        setError(null);
         const response = await axios.post(
           "http://localhost:8000/login",
           values,
@@ -34,12 +36,16 @@ const Login = () => {
         );
         if (response.data.success) {
           //Après la connexion, l'utilisateur reçoit son identifiant, qui sera enregistré dans les cookies
-          Cookies.set("currentUserId", response.data.user_id, { expires: 1 });
+          Cookies.set("currentUserId", response.data.user_id, {
+            expires: 7,
+            secure: false, //true dans la production
+            sameSite: "Strict", //CSRF sécurisé
+          });
           alert("Connexion a réussie !");
           navigate("/dashboard");
         }
       } catch (error) {
-        setError(error.response?.data?.message || "Une erreur est survenue");
+        setError(error.response?.data?.error || "Une erreur est survenue");
       }
     },
   });
@@ -53,7 +59,10 @@ const Login = () => {
         <input
           type="email"
           name="email"
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            formik.handleChange(e);
+            setError(null);
+          }}
           onBlur={formik.handleBlur}
           value={formik.values.email}
         />
@@ -66,7 +75,10 @@ const Login = () => {
         <input
           type="password"
           name="password"
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            formik.handleChange(e);
+            setError(null);
+          }}
           onBlur={formik.handleBlur}
           value={formik.values.password}
         />
