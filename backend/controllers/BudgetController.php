@@ -11,13 +11,19 @@ class BudgetController extends Controller {
         $this->model = new Budget();
     }
 
-    //* 1. Méthode pour appeler la lecture des données
-    public function readBudget(){
-        $budgets = $this->model->read();
+    //* 1. Méthode pour la lecture des données
+    public function readAllBudget(){
+        $budgets = $this->model->read_all();
+        $this->json_response($budgets, 200);
+    }
+    public function readBudgetById($user_id){
+        $user_id = $_GET['user_id'];
+
+        $budgets = $this->model->read_by_id($user_id);
         $this->json_response($budgets, 200);
     }
 
-    //* 2. Méthode pour appeler la création des données
+    //* 2. Méthode pour la création des données
     public function addBudget() {
         // Récupérer les données depuis POST
         $amount_limit = $_POST['amount_limit'];
@@ -35,7 +41,7 @@ class BudgetController extends Controller {
         $this->json_response($new_budget, 201);
     }
 
-    //* 3. Méthode pour appeler la mise à jour des données
+    //* 3. Méthode pour la mise à jour des données
     public function updateBudget() {
         // Récupérer les données depuis POST
         $amount_limit = $_POST['amount_limit'];
@@ -53,7 +59,7 @@ class BudgetController extends Controller {
         $this->json_response($updated_budget, 200);
     }
 
-    //* 4. Méthode pour appeler la suppression des données
+    //* 4. Méthode pour la suppression des données
     public function deleteBudget() {
 
         // Vérifier si le paramètre 'budget_id' existe dans la requête GET

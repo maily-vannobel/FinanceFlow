@@ -9,8 +9,14 @@ class Budget extends Model {
     }
 
     //* 1. Fonction pour lire les budgets
-    public function read(){
+    public function read_all(){
         $stmt = $this->pdo->prepare("SELECT * FROM budgets");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function read_by_id($user_id){
+        $stmt = $this->pdo->prepare("SELECT * FROM budgets WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

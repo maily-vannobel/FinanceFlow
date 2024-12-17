@@ -175,9 +175,14 @@ $routes = [
     ],
 
     // Routes pour les budgets
-    "read_budgets" => [
+    "read_all_budgets" => [
         "controller" => "BudgetController",
-        "method" => "readBudget"
+        "method" => "readAllBudget"
+    ],
+    "read_budget_by_id" => [
+        "controller" => "BudgetController",
+        "method" => "readBudgetById",
+        'arguments' => ['user_id'] //méthode avec un paramétre user_id
     ],
     "create_budget" => [
         "controller" => "BudgetController",
