@@ -17,8 +17,6 @@ class BudgetController extends Controller {
         $this->json_response($budgets, 200);
     }
     public function readBudgetById($user_id){
-        $user_id = $_GET['user_id'];
-
         $budgets = $this->model->read_by_id($user_id);
         $this->json_response($budgets, 200);
     }
