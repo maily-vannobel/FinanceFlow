@@ -92,6 +92,7 @@ const Register = () => {
           navigate("/login");
         }
       } catch (error) {
+        console.log("Error response:", error.response);
         setError(error.response?.data?.error || "L'inscription a échoué");
       }
     },

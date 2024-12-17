@@ -25,6 +25,7 @@ class RegisterController extends Controller {
         $user = new User('users');
         $existingUser = $user->find_by_email($data["email"]);
         if($existingUser) {
+            http_response_code(400);
             echo json_encode([ "error" => "L'email est déjà enregistré dans la base de données"]);
             return;
         }
