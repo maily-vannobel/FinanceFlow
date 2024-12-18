@@ -38,7 +38,7 @@ class LoginController extends Controller {
 
         echo json_encode([
             "success" => "Connexion réussie",
-            "user_id" => $registeredUser['user_id'],
+            "user_id" => $_SESSION['user_id']
         ]);
     }
 }

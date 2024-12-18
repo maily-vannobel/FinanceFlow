@@ -3,12 +3,14 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
+import { AuthProvider } from "./contexts/AuthContext";
 // import "./App.css";
 
 // Composant principal de l'application
 function App() {
   return (
-    <>
+    //children pour passer les props
+    <AuthProvider>
       <div>
         {/* Menu de navigation avec des liens vers les différentes pages */}
         <nav>
@@ -35,7 +37,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </div>
-    </>
+    </AuthProvider>
   );
 }
 
