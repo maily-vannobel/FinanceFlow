@@ -19,6 +19,7 @@ const Budgets = () => {
     }
   };
 
+  // c'est ici que je vais mettre la variable user_id pour récupérer l'id de l'utilisateur
   useEffect(() => {
     fetchBudgets();
   }, []);
