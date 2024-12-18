@@ -18,7 +18,7 @@ const LoyaltyCards = () => {
   const [scanning, setScanning] = useState(false);
   //today contient la date actuelle, et il va servir à gérer le calendrier
   const today = new Date().toISOString().split("T")[0];
-  // useEffect déclenche dès le début le chargement des cartes existantes, et cela ne se fait qu'une seule fois, comme l'indique le tableau vide
+  // useEffect déclenche dès le début le chargement des cartes existantes
   useEffect(() => {
     if (user && user.user_id) {
       fetchCards();
