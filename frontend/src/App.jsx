@@ -5,12 +5,14 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import LoyaltyCards from "./components/LoyaltyCards";
 import Logout from "./components/Logout";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./contexts/AuthContext";
 // import "./App.css";
 
 // Composant principal de l'application
 function App() {
   return (
-    <>
+    <AuthProvider>
       <div>
         {/* Menu de navigation avec des liens vers les différentes pages */}
         <nav>
@@ -41,10 +43,17 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/loyalty-cards" element={<LoyaltyCards />} />
+          <Route
+            path="/loyalty-cards"
+            element={
+              <ProtectedRoute>
+                <LoyaltyCards />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
-    </>
+    </AuthProvider>
   );
 }
 
