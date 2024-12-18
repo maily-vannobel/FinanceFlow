@@ -5,12 +5,14 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import LoyaltyCards from "./components/LoyaltyCards";
+import { AuthProvider } from "./contexts/AuthContext";
 // import "./App.css";
 
 // Composant principal de l'application
 function App() {
   return (
-    <>
+    //children pour passer les props
+    <AuthProvider>
       <div>
         {/* Menu de navigation avec des liens vers les différentes pages */}
         <nav>
@@ -41,7 +43,7 @@ function App() {
           <Route path="/loyalty-cards" element={<LoyaltyCards />} />
         </Routes>
       </div>
-    </>
+    </AuthProvider>
   );
 }
 

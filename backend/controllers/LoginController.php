@@ -35,10 +35,10 @@ class LoginController extends Controller {
         session_regenerate_id(true);
         //Enregistrement de l'idéntifiant  de l'utilisateur dans la session
         $_SESSION["user_id"] = $registeredUser["user_id"];
-
+        //L'identifiant sera récuperer dans le frontend 
         echo json_encode([
             "success" => "Connexion réussie",
-            "user_id" => $registeredUser['user_id'],
+            "user_id" => $_SESSION['user_id'],
         ]);
     }
 }
