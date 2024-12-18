@@ -3,9 +3,10 @@ import axios from "axios";
 import ReactQR from "react-qr-code";
 import Barcode from "react-barcode";
 import { Scanner } from "@yudiel/react-qr-scanner";
-import Cookies from "js-cookie";
+import { useAuth } from "../contexts/AuthContext";
 //Création d'un component 'LoyaltyCards' avec des états initiaux pour gérer le numéro de carte, les cartes de fidélité, les erreurs et d'autres
 const LoyaltyCards = () => {
+  const { user } = useAuth();
   const [cardNumber, setCardNumber] = useState("");
   const [cardEstablishment, setCardEstablishment] = useState("");
   const [cardExpiryDate, setCardExpiryDate] = useState("");
@@ -17,23 +18,18 @@ const LoyaltyCards = () => {
   const [scanning, setScanning] = useState(false);
   //today contient la date actuelle, et il va servir à gérer le calendrier
   const today = new Date().toISOString().split("T")[0];
-  //L'identifiant de l'utilisateur est récupéré depuis le cookie et assigné à une variable
-  const currentUserId = Cookies.get("currentUserId");
-  // useEffect déclenche dès le début le chargement des cartes existantes, et cela ne se fait qu'une seule fois, comme l'indique le tableau vide
+  // useEffect déclenche dès le début le chargement des cartes existantes
   useEffect(() => {
-    if (!currentUserId) {
-      setError("Utilisateur non connecté");
-    } else {
+    if (user && user.user_id) {
       fetchCards();
     }
-  }, [currentUserId]);
+  }, [user]);
   //Envoi d'une requête GET a l'endpoint pour récuperer les cartes de fidélité d'un utilisateur, avec gestion des erreurs
   const fetchCards = async () => {
     setLoading(true);
     try {
       const response = await axios.get("http://localhost:8000/getUserCards", {
-        // params: { user_id: currentUserId },
-        params: { user_id: currentUserId },
+        params: { user_id: user.user_id },
         withCredentials: true,
       });
       setCards(response.data.cards || []);
@@ -70,7 +66,7 @@ const LoyaltyCards = () => {
           establishment: cardEstablishment,
           card_number: cardNumber,
           expiry_date: cardExpiryDate,
-          user_id: currentUserId,
+          user_id: user?.user_id,
         },
         { withCredentials: true }
       );
@@ -94,9 +90,6 @@ const LoyaltyCards = () => {
     }
   };
 
-  if (!currentUserId) {
-    return <p>Veuillez vous connecter pour gérer vos cartes de fidélité.</p>;
-  }
   //Cette function envoie une requête DELETE pour supprimer une carte de fidélité choisi par l'utilisateur
   const handleDelete = async (cardNumber) => {
     //L'onglet de la confirmation s'affiche avec le message pour utilisateur
@@ -109,7 +102,7 @@ const LoyaltyCards = () => {
     setLoading(true);
     try {
       const response = await axios.delete("http://localhost:8000/deleteCard", {
-        data: { card_number: cardNumber },
+        data: { card_number: cardNumber, user_id: user.user_id },
         withCredentials: true,
       });
       if (response.data.success) {
