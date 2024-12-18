@@ -14,11 +14,19 @@ class BudgetController extends Controller {
     //* 1. Méthode pour la lecture des données
     public function readAllBudget(){
         $budgets = $this->model->read_all();
-        $this->json_response($budgets, 200);
+        if($budgets) {
+            echo json_encode(["success" => true, "budgets" => $budgets]);
+        }else {
+            echo json_encode(["error" => "Aucun budgets"]);
+        }
     }
     public function readBudgetById($user_id){
         $budgets = $this->model->read_by_id($user_id);
-        $this->json_response($budgets, 200);
+        if($budgets) {
+            echo json_encode(["success" => true, "budgets" => $budgets]);
+        }else {
+            echo json_encode(["error" => "Aucun budgets"]);
+        }
     }
 
     //* 2. Méthode pour la création des données
