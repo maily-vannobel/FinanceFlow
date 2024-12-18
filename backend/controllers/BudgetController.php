@@ -18,10 +18,10 @@ class BudgetController extends Controller {
     }
     public function readBudgetById($user_id){
         $budgets = $this->model->read_by_id($user_id);
-        if($cards) {
-            echo json_encode(["success" => true, "cards" => $cards]);
+        if($budgets) {
+            echo json_encode(["success" => true, "budgets" => $budgets]);
         }else {
-            echo json_encode(["error" => "Aucune carte de fidélité"]);
+            echo json_encode(["error" => "Aucun budget trouvé"]);
         }
     }
 
