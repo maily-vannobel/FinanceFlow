@@ -173,5 +173,28 @@ $routes = [
     "uploadImage" => [
         "controller" => "ImageUploadController",
         "method" => "menage_image"
-    ]
+    ],
+
+    // Routes pour les budgets
+    "read_all_budgets" => [
+        "controller" => "BudgetController",
+        "method" => "readAllBudget"
+    ],
+    "read_budget_by_id" => [
+        "controller" => "BudgetController",
+        "method" => "readBudgetById",
+        'arguments' => ['user_id'] //méthode avec un paramétre user_id
+    ],
+    "create_budget" => [
+        "controller" => "BudgetController",
+        "method" => "createBudget"
+    ],
+    "update_budget" => [
+        "controller" => "BudgetController",
+        "method" => "updateBudget"
+    ],
+    "delete_budget" => [
+        "controller" => "BudgetController",
+        "method" => "deleteBudget"
+    ],
 ];
