@@ -23,6 +23,7 @@ const Budgets = () => {
     }
 
     setLoading(true);
+    // Débbuger chemiin de la requête
     console.log(
       `Making request to: http://localhost:8000/read_budget_by_id?user_id=${user.user_id}`
     );
