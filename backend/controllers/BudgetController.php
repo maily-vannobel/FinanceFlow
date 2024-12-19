@@ -31,23 +31,42 @@ class BudgetController extends Controller {
 
     //* 2. Méthode pour la création des données
     public function addBudget() {
-        // Récupérer les données depuis POST
-        $amount_limit = $_POST['amount_limit'];
-        $period = $_POST['period'];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
-        $year = $_POST['year'];
-        $month = $_POST['month'];
-        $user_id = $_POST['user_id'];
+        // Lire les données JSON envoyées depuis le frontend
+        $rawData = file_get_contents('php://input');
+        $data = json_decode($rawData, true);
+
+        if (!$data) {
+            echo json_encode(["error" => "Données invalides ou manquantes"]);
+            http_response_code(400); // Mauvaise requête
+            return;
+        }
+
+        // Extraire les valeurs des données JSON
+        $amount_limit = $data['amount_limit'] ?? null;
+        $period = $data['period'] ?? null;
+        $start_date = $data['start_date'] ?? null;
+        $end_date = $data['end_date'] ?? null;
+        $year = $data['year'] ?? null;
+        $month = $data['month'] ?? null;
+        $user_id = $data['user_id'] ?? null;
+
+        // Vérifiez que toutes les données nécessaires sont présentes
+        if (!$amount_limit || !$period || !$start_date || !$end_date || !$year || !$month || !$user_id) {
+            echo json_encode(["error" => "Tous les champs sont requis"]);
+            http_response_code(400); // Mauvaise requête
+            return;
+        }
 
         // Appeler la méthode create du modèle pour ajouter le budget
-        $new_budget = $this->model->create($amount_limit, $period, $start_date, $end_date, $year, $month, $user_id);
+        try {
+            $new_budget = $this->model->create($amount_limit, $period, $start_date, $end_date, $year, $month, $user_id);
 
-        // Retourner une réponse avec le budget créé
-        if($new_budgets) {
-            echo json_encode(["success" => true, "new_budgets" => $new_budgets]);
-        }else {
-            echo json_encode(["error" => "Erreur lors de la création du budget"]);
+            // Retourner une réponse avec le budget créé
+            echo json_encode(["success" => true, "new_budget" => $new_budget]);
+        } catch (Exception $e) {
+            // Gérer les erreurs lors de l'insertion
+            echo json_encode(["error" => $e->getMessage()]);
+            http_response_code(500); // Erreur interne du serveur
         }
     }
 

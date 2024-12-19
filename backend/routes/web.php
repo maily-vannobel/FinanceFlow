@@ -187,7 +187,7 @@ $routes = [
     ],
     "create_budget" => [
         "controller" => "BudgetController",
-        "method" => "createBudget"
+        "method" => "addBudget"
     ],
     "update_budget" => [
         "controller" => "BudgetController",
