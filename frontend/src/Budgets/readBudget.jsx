@@ -2,12 +2,16 @@ import { useAuth } from "../contexts/AuthContext";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import CreateBudget from "../Budgets/createBudget";
+
 const readBudget = () => {
   const { user } = useAuth(); // Récupérer l'utilisateur du contexte
   const [budgets, setBudgets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
+
+  const [showCreateBudget, setShowCreateBudget] = useState(false); // Contrôle de l'affichage du formulaire
 
   useEffect(() => {
     if (user && user.user_id) {
@@ -75,9 +79,20 @@ const readBudget = () => {
         {/* Section pour supprimer un budget */}
         <button>Supprimer le budget</button>
       </section>
-      {/* Section pour crée un nouveau budget */}
+
       <section>
-        <button>Crée un nouveau budget</button>
+        {/* Section pour crée un nouveau budget */}
+        <div>
+          <button onClick={() => setShowCreateBudget(!showCreateBudget)}>
+            {showCreateBudget ? "Annuler la création" : "Créer un nouveau budget"}
+          </button>
+        </div>
+        {/* Affichage conditionnel du formulaire de création */}
+        {showCreateBudget && (
+          <div>
+            <CreateBudget />
+          </div>
+        )}
       </section>
     </div>
   );
