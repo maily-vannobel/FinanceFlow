@@ -4,6 +4,7 @@ import axios from "axios";
 
 import CreateBudget from "../Budgets/createBudget";
 import DeleteBudget from "../Budgets/deleteBudget";
+import UpdateBudget from "../Budgets/updateBudget";
 
 const readBudget = () => {
   const { user } = useAuth(); // Récupérer l'utilisateur du contexte
@@ -13,6 +14,7 @@ const readBudget = () => {
   const [error, setError] = useState(null);
 
   const [showCreateBudget, setShowCreateBudget] = useState(false); // Contrôle de l'affichage du formulaire
+  const [editingBudgetId, setEditingBudgetId] = useState(null); // Budget en cours d'édition
 
   useEffect(() => {
     if (user && user.user_id) {
@@ -22,17 +24,12 @@ const readBudget = () => {
 
   //* GET : Fonction pour lire tous les budgets de l'utilisateur connecté
   const readBudgets = async () => {
-    console.log(user); // Vérifier que l'utilisateur est correctement récupéré
     if (!user || !user.user_id) {
       setError("Aucun utilisateur connecté");
       return;
     }
 
     setLoading(true);
-    // Débbuger chemiin de la requête
-    console.log(
-      `Making request to: http://localhost:8000/read_budget_by_id?user_id=${user.user_id}`
-    );
     try {
       const response = await axios.get("http://localhost:8000/read_budget_by_id", {
         params: { user_id: user.user_id }, // Passer l'ID de l'utilisateur connecté
@@ -42,15 +39,7 @@ const readBudget = () => {
       setError(null);
       setSuccess(null);
     } catch (err) {
-      console.error("Error fetching budgets:", err); // Log l'erreur complète
-      if (err.response) {
-        console.error("Response error:", err.response.data);
-        console.error("Status code:", err.response.status);
-      } else if (err.request) {
-        console.error("Request error:", err.request);
-      } else {
-        console.error("Error message:", err.message);
-      }
+      console.error("Error fetching budgets:", err);
       setError(err.response?.data?.error || "Erreur lors de la récupération des budgets");
       setBudgets([]);
     } finally {
@@ -61,6 +50,19 @@ const readBudget = () => {
   // Fonction pour mettre à jour la liste des budgets après suppression
   const handleDeleteSuccess = (budgetId) => {
     setBudgets((prev) => prev.filter((budget) => budget.budget_id !== budgetId));
+  };
+
+  // Fonction appelée après une mise à jour réussie
+  const handleUpdateSuccess = (updatedBudget) => {
+    setBudgets((prev) =>
+      prev.map((budget) => (budget.budget_id === updatedBudget.budget_id ? updatedBudget : budget))
+    );
+    setEditingBudgetId(null); // Fermer le formulaire d'édition
+  };
+
+  // Fonction pour annuler l'édition
+  const handleCancelEdit = () => {
+    setEditingBudgetId(null);
   };
 
   return (
@@ -76,16 +78,39 @@ const readBudget = () => {
           {budgets.length > 0 ? (
             budgets.map((budget) => (
               <li key={budget.budget_id}>
-                <p>Montant limite : {budget.amount_limit}</p>
-                <p>Période : {budget.period}</p>
-                <p>Date de début : {budget.start_date}</p>
-                <p>Date de fin : {budget.end_date}</p>
+                <div style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
+                  {editingBudgetId === budget.budget_id ? (
+                    // Formulaire de mise à jour
+                    <div>
+                      <UpdateBudget
+                        budget={budget}
+                        onCancel={handleCancelEdit}
+                        onUpdateSuccess={handleUpdateSuccess}
+                      />
+                      {/* Bouton pour annuler l'édition */}
+                      <button onClick={handleCancelEdit} style={{ marginTop: "10px" }}>
+                        Annuler
+                      </button>
+                    </div>
+                  ) : (
+                    // Affichage des détails du budget
+                    <>
+                      <p>Montant limite : {budget.amount_limit}</p>
+                      <p>Période : {budget.period}</p>
+                      <p>Date de début : {budget.start_date}</p>
+                      <p>Date de fin : {budget.end_date}</p>
 
-                {/* Section pour mettre à jour un budget */}
-                <button>Mettre à jour le budget</button>
+                      {/* Bouton pour éditer */}
+                      <button onClick={() => setEditingBudgetId(budget.budget_id)}>Modifier</button>
 
-                {/* Section pour supprimer un budget */}
-                <DeleteBudget budgetId={budget.budget_id} onDeleteSuccess={handleDeleteSuccess} />
+                      {/* Section pour supprimer un budget */}
+                      <DeleteBudget
+                        budgetId={budget.budget_id}
+                        onDeleteSuccess={handleDeleteSuccess}
+                      />
+                    </>
+                  )}
+                </div>
               </li>
             ))
           ) : (
@@ -94,14 +119,13 @@ const readBudget = () => {
         </ul>
       </section>
 
+      {/* Section pour créer un nouveau budget */}
       <section>
-        {/* Section pour créer un nouveau budget */}
         <div>
           <button onClick={() => setShowCreateBudget(!showCreateBudget)}>
             {showCreateBudget ? "Annuler la création" : "Créer un nouveau budget"}
           </button>
         </div>
-        {/* Affichage conditionnel du formulaire de création */}
         {showCreateBudget && (
           <div>
             <CreateBudget />

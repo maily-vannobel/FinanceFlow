@@ -72,23 +72,37 @@ class BudgetController extends Controller {
 
     //* 3. Méthode pour la mise à jour des données
     public function updateBudget() {
-        // Récupérer les données depuis POST
-        $amount_limit = $_POST['amount_limit'];
-        $period = $_POST['period'];
-        $start_date = $_POST['start_date'];
-        $end_date = $_POST['end_date'];
-        $year = $_POST['year'];
-        $month = $_POST['month'];
-        $user_id = $_POST['user_id'];
+        // Récupérer les données JSON envoyées dans la requête
+        $input = json_decode(file_get_contents("php://input"), true);
+
+        if (!$input) {
+            $this->json_response(['error' => 'Données JSON invalides'], 400);
+            return;
+        }
+
+        // Extraire les données du JSON
+        $id = $input['id'] ?? null;
+        $amount_limit = $input['amount_limit'] ?? null;
+        $period = $input['period'] ?? null;
+        $start_date = $input['start_date'] ?? null;
+        $end_date = $input['end_date'] ?? null;
+        $year = $input['year'] ?? null;
+        $month = $input['month'] ?? null;
+
+        // Validation de base
+        if (empty($id) || empty($amount_limit) || empty($period) || empty($start_date) || empty($end_date)) {
+            $this->json_response(['error' => 'Données invalides ou manquantes'], 400);
+            return;
+        }
 
         // Appeler la méthode update du modèle pour mettre à jour le budget
-        $updated_budget = $this->model->update($amount_limit, $period, $start_date, $end_date, $year, $month);
+        $updated_budget = $this->model->update($id, $amount_limit, $period, $start_date, $end_date, $year, $month);
 
         // Retourner une réponse avec le budget mis à jour
-        if($updated_budget) {
-            echo json_encode(["success" => true, "updated_budget" => $updated_budget]);
-        }else {
-            echo json_encode(["error" => "Erreur de la mise à jour du budget"]);
+        if ($updated_budget) {
+            $this->json_response(["success" => true, "updated_budget" => true], 200);
+        } else {
+            $this->json_response(["error" => "Erreur lors de la mise à jour du budget"], 500);
         }
     }
 

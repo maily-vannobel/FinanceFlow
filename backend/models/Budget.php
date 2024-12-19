@@ -79,22 +79,30 @@ class Budget extends Model {
     }
 
     //* 3. Méthode pour mettre à jour un budget
-    public function update($amount_limit, $period, $start_date, $end_date, $year, $month) {
+    public function update($budget_id, $amount_limit, $period, $start_date, $end_date, $year, $month) {
+        try {
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $stmt = $this->pdo->prepare("UPDATE budgets SET amount_limit = :amount_limit, period = :period, start_date = :start_date, end_date = :end_date, year = :year, month = :month WHERE id = :id");
-        $stmt->bindParam(':amount_limit', $amount_limit);
-        $stmt->bindParam(':period', $period);
-        $stmt->bindParam(':start_date', $start_date);
-        $stmt->bindParam(':end_date', $end_date);
-        $stmt->bindParam(':year', $year);
-        $stmt->bindParam(':month', $month);
-        $stmt->execute();
+            $stmt = $this->pdo->prepare("
+                UPDATE budgets 
+                SET amount_limit = :amount_limit, period = :period, start_date = :start_date, end_date = :end_date, year = :year, month = :month 
+                WHERE budget_id = :budget_id
+            ");
+            $stmt->bindParam(':budget_id', $budget_id);
+            $stmt->bindParam(':amount_limit', $amount_limit);
+            $stmt->bindParam(':period', $period);
+            $stmt->bindParam(':start_date', $start_date);
+            $stmt->bindParam(':end_date', $end_date);
+            $stmt->bindParam(':year', $year);
+            $stmt->bindParam(':month', $month);
+            $stmt->execute();
 
-        // Vérifier si la mise à jour a eu lieu (retourne le nombre de lignes affectées)
-        if ($stmt->rowCount() > 0) {
-            return true;  // La mise à jour a réussi
-        } else {
-            return false; // Aucun enregistrement mis à jour
+            // Vérifier si la mise à jour a eu lieu (retourne le nombre de lignes affectées)
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            // Gestion des erreurs
+            error_log("Erreur lors de la mise à jour : " . $e->getMessage());
+            return false;
         }
     }
 
