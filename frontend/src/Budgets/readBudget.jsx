@@ -67,17 +67,24 @@ const readBudget = () => {
       <section>
         <ul>
           {budgets.length > 0 ? (
-            budgets.map((budget) => <li key={budget.budget_id}>{budget.amount_limit}</li>)
+            budgets.map((budget) => (
+              <li key={budget.budget_id}>
+                {budget.amount_limit}
+                <p>Montant limite : {budget.amount_limit}</p>
+                <p>Période : {budget.period}</p>
+                <p>Date de début : {budget.start_date}</p>
+                <p>Date de fin : {budget.end_date}</p>
+                {/* Section pour mettre à jour un budget */}
+                <button >Mettre à jour le budget</button>
+
+                {/* Section pour supprimer un budget */}
+                <button >Supprimer le budget</button>
+              </li>
+            ))
           ) : (
             <p>Aucun budget trouvé.</p>
           )}
         </ul>
-
-        {/* Section pour mettre à jour un budget */}
-        <button>Mettre à jour le budget</button>
-
-        {/* Section pour supprimer un budget */}
-        <button>Supprimer le budget</button>
       </section>
 
       <section>
