@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 import CreateBudget from "../Budgets/createBudget";
+import DeleteBudget from "../Budgets/deleteBudget";
 
 const readBudget = () => {
   const { user } = useAuth(); // Récupérer l'utilisateur du contexte
@@ -56,29 +57,35 @@ const readBudget = () => {
       setLoading(false);
     }
   };
+
+  // Fonction pour mettre à jour la liste des budgets après suppression
+  const handleDeleteSuccess = (budgetId) => {
+    setBudgets((prev) => prev.filter((budget) => budget.budget_id !== budgetId));
+  };
+
   return (
     <div>
-      {/* Crée une boucle pour faire apparaitre tous les budgets dans una card */}
       <h1>Les budgets</h1>
       {loading && <p>Chargement...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       <p>Utilisateur connecté : {user.user_id}</p>
-      {/* Section pour afficher les budgets de l'utilisateurs */}
+
+      {/* Section pour afficher les budgets de l'utilisateur */}
       <section>
         <ul>
           {budgets.length > 0 ? (
             budgets.map((budget) => (
               <li key={budget.budget_id}>
-                {budget.amount_limit}
                 <p>Montant limite : {budget.amount_limit}</p>
                 <p>Période : {budget.period}</p>
                 <p>Date de début : {budget.start_date}</p>
                 <p>Date de fin : {budget.end_date}</p>
+
                 {/* Section pour mettre à jour un budget */}
-                <button >Mettre à jour le budget</button>
+                <button>Mettre à jour le budget</button>
 
                 {/* Section pour supprimer un budget */}
-                <button >Supprimer le budget</button>
+                <DeleteBudget budgetId={budget.budget_id} onDeleteSuccess={handleDeleteSuccess} />
               </li>
             ))
           ) : (
@@ -88,7 +95,7 @@ const readBudget = () => {
       </section>
 
       <section>
-        {/* Section pour crée un nouveau budget */}
+        {/* Section pour créer un nouveau budget */}
         <div>
           <button onClick={() => setShowCreateBudget(!showCreateBudget)}>
             {showCreateBudget ? "Annuler la création" : "Créer un nouveau budget"}
