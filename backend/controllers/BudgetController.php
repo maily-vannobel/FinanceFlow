@@ -14,7 +14,11 @@ class BudgetController extends Controller {
     //* 1. Méthode pour la lecture des données
     public function readAllBudget(){
         $budgets = $this->model->read_all();
-        $this->json_response($budgets, 200);
+        if($budgets) {
+            echo json_encode(["success" => true, "budgets" => $budgets]);
+        }else {
+            echo json_encode(["error" => "Aucun budgets trouvé"]);
+        }
     }
     public function readBudgetById($user_id){
         $budgets = $this->model->read_by_id($user_id);
@@ -40,7 +44,11 @@ class BudgetController extends Controller {
         $new_budget = $this->model->create($amount_limit, $period, $start_date, $end_date, $year, $month, $user_id);
 
         // Retourner une réponse avec le budget créé
-        $this->json_response($new_budget, 201);
+        if($new_budgets) {
+            echo json_encode(["success" => true, "new_budgets" => $new_budgets]);
+        }else {
+            echo json_encode(["error" => "Erreur lors de la création du budget"]);
+        }
     }
 
     //* 3. Méthode pour la mise à jour des données
@@ -58,7 +66,11 @@ class BudgetController extends Controller {
         $updated_budget = $this->model->update($amount_limit, $period, $start_date, $end_date, $year, $month);
 
         // Retourner une réponse avec le budget mis à jour
-        $this->json_response($updated_budget, 200);
+        if($updated_budget) {
+            echo json_encode(["success" => true, "updated_budget" => $updated_budget]);
+        }else {
+            echo json_encode(["error" => "Erreur de la mise à jour du budget"]);
+        }
     }
 
     //* 4. Méthode pour la suppression des données
@@ -76,10 +88,10 @@ class BudgetController extends Controller {
         $deleted_budget = $this->model->delete($budget_id);
 
         // Retourner une réponse en fonction du résultat de la suppression
-        if ($deleted_budget) {
-            $this->json_response(['message' => 'Budget supprimé avec succès'], 200);
-        } else {
-            $this->json_response(['error' => 'Erreur lors de la suppression du budget'], 500);
+        if($deleted_budget) {
+            echo json_encode(["success" => true, "deleted_budget" => $deleted_budget]);
+        }else {
+            echo json_encode(["error" => "Erreur lors de la suppression du budget"]);
         }
     }
 }
