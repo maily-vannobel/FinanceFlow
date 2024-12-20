@@ -118,8 +118,8 @@ $routes = [
         "method" => "show"
     ],
     "user-subcategories/by-category" => [
-    "controller" => "UserSubcategoryController",
-    "method" => "findByUserCategory"
+        "controller" => "UserSubcategoryController",
+        "method" => "findByUserCategory"
     ],
     
     "user-subcategories/create" => [
@@ -157,7 +157,7 @@ $routes = [
         "method" => "destroy"
     ],
 
-        "addCard" => [
+    "addCard" => [
         "controller" => "LoyaltyCardController",
         "method" => "create_card"
     ],
@@ -196,5 +196,28 @@ $routes = [
     "delete_budget" => [
         "controller" => "BudgetController",
         "method" => "deleteBudget"
+    ],
+
+    // Routes pour les dettes
+    "read_all_dues" => [
+        "controller" => "DuesController",
+        "method" => "readAllDues"
+    ],
+    "read_dues_by_id" => [
+        "controller" => "DuesController",
+        "method" => "readDuesById",
+        'arguments' => ['user_id'] //méthode avec un paramétre user_id
+    ],
+    "create_dues" => [
+        "controller" => "DuesController",
+        "method" => "addDues"
+    ],
+    "update_dues" => [
+        "controller" => "DuesController",
+        "method" => "updateDues"
+    ],
+    "delete_dues" => [
+        "controller" => "DuesController",
+        "method" => "deleteDues"
     ],
 ];
