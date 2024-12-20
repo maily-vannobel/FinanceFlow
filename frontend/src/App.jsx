@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import LoyaltyCards from "./components/LoyaltyCards";
 import Budgets from "./components/Budgets";
+import Dues from "./components/Dues";
 import Logout from "./components/Logout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -37,6 +38,9 @@ function App() {
               <Link to="/budgets">Les budgets</Link>
             </li>
             <li>
+              <Link to="/dues">Les dettes</Link>
+            </li>
+            <li>
               <Logout />
             </li>
           </ul>
@@ -47,13 +51,27 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/budgets" element={<Budgets />} />
+          <Route
+            path="/budgets"
+            element={
+              <ProtectedRoute>
+                <Budgets />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dues"
+            element={
+              <ProtectedRoute>
+                <Dues />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/loyalty-cards"
             element={
               <ProtectedRoute>
                 <LoyaltyCards />
-                <Budgets />
               </ProtectedRoute>
             }
           />
